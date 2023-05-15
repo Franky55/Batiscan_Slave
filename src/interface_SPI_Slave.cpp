@@ -2,62 +2,94 @@
 #include "main.h"
 #include <SPI.h>
 #include "interface_SPI_Slave.h"
+#include "serviceBaseDeTemps.h"
+#include <ESP32SPISlave.h>
+
+#define INTERFACEGPIO10_COMPTE  (\
+  GPIO10_TEMPS_POUR_RESET_EN_MS * SERVICEBASEDETEMPS_FREQUENCE_EN_HZ \
+  /1000.0)
 
 
+void interface_SPI_Queue_Transaction();
+void interface_SPI_Data_Available();
+void interface_SPI_ReadData();
 
 
-SPIClass interfaceSPI_Slave(HSPI);
+ESP32SPISlave slave;
+INTERFACESPISTRUCT interface_SPI_Struct;
 
+unsigned char RAW_RX_buf[SPI_BUFFER_SIZE];
+unsigned long interface_Compteur_Master_Connecte = 0;
 
 int interface_SPI_SLAVE_initialise()
 {
     pinMode(SPI_CS1, OUTPUT);
 
     digitalWrite(SPI_CS1, LOW);
-
-    interfaceSPI_Slave.begin(SPI_CLK, SPI_MISO, SPI_MOSI, SPI_CS1);
-    //interfaceSPI_Slave.setClockDivider(1);
-    //interfaceSPI_Slave.setDataMode();
-    //interfaceSPI_Slave.setBitOrder();
-    // interfaceSPI_Slave.setFrequency(10000000);
+    interface_Compteur_Master_Connecte = 0;
+    interface_SPI_Struct.etatDuModule = 0;
+    memset(interface_SPI_Struct.spi_slave_rx_buf, 0, SPI_BUFFER_SIZE);
+    memset(interface_SPI_Struct.spi_slave_tx_buf, 0, SPI_BUFFER_SIZE);
+    
+    serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_WaitForMaster;
+    
     return 0;
 }
 
-
-int interface_SPI_SLAVE_Transaction(const unsigned char * data, unsigned char * out, unsigned long size)
+void interface_SPI_WaitForMaster()
 {
-    interfaceSPI_Slave.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
-
-    digitalWrite(SPI_CS1, LOW);  // Select the slave device
-  
-  // Send each character of the command string
-  for (size_t i = 0; i < size; i++) {
-    interfaceSPI_Slave.transfer(data[i]);
-  }
-
-  digitalWrite(SPI_CS1, HIGH);  // Deselect the slave device
-    interfaceSPI_Slave.endTransaction();
-    Serial.print("Data Sending:     ");
-
-    for(int i = 0; i < size; i++)
+    interface_Compteur_Master_Connecte++;
+    digitalWrite(GPIO10, LOW);
+    if (interface_Compteur_Master_Connecte < INTERFACEGPIO10_COMPTE)
     {
-        Serial.print((char)data[i]);
+        return;
     }
+    //digitalWrite(GPIO10, HIGH);
+    pinMode(SPI_CS1, INPUT);
 
-    Serial.print("Data Sending:     ");
-
-    for(int i = 0; i < size; i++)
-    {
-        Serial.print((char)data[i]);
-    }
-
-
-    Serial.print("\nData receiving:     ");
-
-    for(int i = 0; i < size; i++)
-    {
-        Serial.print((char)out[i]);
-    }
-
-    return 0;
+    interface_Compteur_Master_Connecte = 0;
+    slave.setDataMode(SPI_MODE0);
+    slave.begin(SPI3_HOST, SPI_CLK, SPI_MISO, SPI_MOSI, SPI_CS1);
+    serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_Queue_Transaction;
 }
+
+void interface_SPI_Queue_Transaction()
+{
+    slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, SPI_BUFFER_SIZE);
+
+    serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_Data_Available;
+ 
+}
+
+
+void interface_SPI_Data_Available()
+{
+    if(slave.available() <= 0)
+    {
+        return ;
+    }
+    serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_ReadData;
+  
+}
+
+
+void interface_SPI_ReadData()
+{
+    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
+    {
+        interface_SPI_Struct.spi_slave_rx_buf[i] = RAW_RX_buf[i];
+    }
+
+
+    memset(interface_SPI_Struct.spi_slave_rx_buf, 0, SPI_BUFFER_SIZE);
+
+    // you should pop the received packet
+    slave.pop();
+
+    interface_SPI_Struct.etatDuModule = 1;
+
+    serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_Queue_Transaction;
+
+  
+}
+

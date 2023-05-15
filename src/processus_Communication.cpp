@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "main.h"
 #include "interface_NEOPIXEL.h"
+#include "interface_SPI_Slave.h"
 #include "serviceBaseDeTemps.h"
 //#include "BFIO"
 #include <stdio.h>
@@ -8,11 +9,8 @@
 
 // if udp:         https://gist.github.com/santolucito/70ecb94ce297eb1b8b8034f78683447b
 
-
-
-
-PROCESSUS_WIFI processus_WIFI;
-
+void processus_Communication_Att_Lire();
+void processus_Communication_Lire();
 
 int compt = 0;
 
@@ -20,11 +18,48 @@ int compt = 0;
 
 int Processus_Communication_initialise(void)
 {
-    processus_WIFI.State = 0;
-    processus_WIFI.DataToRead = 0;
-    processus_WIFI.DataToSend = 0;
+
     interface_NEOPIXEL_allume(0, 0, 100);
-    //serviceBaseDeTemps_execute[PROCESSUS_WIFI_PHASE] = Processus_Communication_ConnexionClient;
+    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
+    
     return 0;
+}
+
+void processus_Communication_Att_Lire()
+{
+    if(interface_SPI_Struct.etatDuModule != 1)
+    {
+        return;
+    }
+
+    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Lire;
+
+}
+
+
+void processus_Communication_Lire()
+{
+    Serial.print("Data Received: ");
+    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
+    {
+        Serial.print(interface_SPI_Struct.spi_slave_rx_buf[i]);
+    }
+    Serial.println("");
+
+    interface_SPI_Struct.etatDuModule = 0;
+
+
+    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Set_New_Com;
+}
+
+
+void processus_Communication_Set_New_Com()
+{
+    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
+    {
+        interface_SPI_Struct.spi_slave_tx_buf[i] = i;
+    }
+
+    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
 }
 

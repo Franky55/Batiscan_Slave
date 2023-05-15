@@ -82,6 +82,7 @@ void main_initialise(void)
   interface_Accelerometre_initialise();
   interface_PWM_Initialise();
   interface_GPIO_Initialise();
+  interface_SPI_SLAVE_initialise();
 
   processusClignotant_initialise();
   Processus_Controle_initialise();

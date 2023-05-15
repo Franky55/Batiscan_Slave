@@ -88,6 +88,7 @@
 #define SPI_CLK 12
 #define SPI_CS1 10
 
+#define SPI_BUFFER_SIZE 255
 
 //Utlisation de la LED Neopixel
 #define NEOPIXEL  45
@@ -133,11 +134,11 @@
  * @brief Numéro de phase du processus PWM
  */
 #define PROCESSUSPWM_PHASE 2
-
 /**
- * @brief Numéro de phase du processus du wifi dans la Communication
+ * @brief Phase pour la communication SPI
+ * 
  */
-#define PROCESSUS_WIFI_PHASE 3
+#define INTERFACESPI_TRANSACTION 3
 
 
 #define PROCESSUSCLIGNOTANT_TEMPS_ALLUME_EN_MS 1000
