@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "main.h"
 #include <SPI.h>
+#include "interface_NEOPIXEL.h"
 #include "interface_SPI_Slave.h"
 #include "serviceBaseDeTemps.h"
 #include <ESP32SPISlave.h>
@@ -9,7 +10,7 @@
   GPIO10_TEMPS_POUR_RESET_EN_MS * SERVICEBASEDETEMPS_FREQUENCE_EN_HZ \
   /1000.0)
 
-
+void interface_SPI_WaitForMaster();
 void interface_SPI_Queue_Transaction();
 void interface_SPI_Data_Available();
 void interface_SPI_ReadData();
@@ -46,6 +47,9 @@ void interface_SPI_WaitForMaster()
     }
     //digitalWrite(GPIO10, HIGH);
     pinMode(SPI_CS1, INPUT);
+    pinMode(SPI_CLK, INPUT);
+    pinMode(SPI_MOSI, INPUT);
+    //interface_NEOPIXEL_allume(0, 100, 0);
 
     interface_Compteur_Master_Connecte = 0;
     slave.setDataMode(SPI_MODE0);
@@ -64,10 +68,15 @@ void interface_SPI_Queue_Transaction()
 
 void interface_SPI_Data_Available()
 {
+    interface_NEOPIXEL_allume(100, 0, 0);
+     Serial.print("\nslave.Available(): ");
+    // Serial.println(slave.available());
+    Serial.println(digitalRead(GPIO10));
     if(slave.available() <= 0)
     {
         return ;
     }
+    interface_NEOPIXEL_allume(0, 100, 100);
     serviceBaseDeTemps_execute[INTERFACESPI_TRANSACTION] = interface_SPI_ReadData;
   
 }

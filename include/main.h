@@ -115,7 +115,7 @@
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 4
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
 
 
 
@@ -139,6 +139,12 @@
  * 
  */
 #define INTERFACESPI_TRANSACTION 3
+
+/**
+ * @brief Phase pour la communication
+ * 
+ */
+#define PROCESSUSCOMMUNICATION 4
 
 
 #define PROCESSUSCLIGNOTANT_TEMPS_ALLUME_EN_MS 1000

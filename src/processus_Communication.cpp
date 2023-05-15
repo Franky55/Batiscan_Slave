@@ -11,6 +11,7 @@
 
 void processus_Communication_Att_Lire();
 void processus_Communication_Lire();
+void processus_Communication_Set_New_Com();
 
 int compt = 0;
 
