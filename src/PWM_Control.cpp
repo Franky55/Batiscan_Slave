@@ -17,5 +17,6 @@ PWM_Control::PWM_Control()
 
 float PWM_Control::write_PWM(int servoPin, int position)
 {
-
+    
+    return 0;
 }
