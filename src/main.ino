@@ -20,6 +20,8 @@
 #include <Adafruit_NeoPixel.h>
 #include "main.h"
 
+#include "PWM_Control.h"
+
 // inlcude des pilotes
 
 #include "piloteEntree1.h"
