@@ -86,7 +86,7 @@
 #define SPI_MISO 13
 #define SPI_MOSI 11
 #define SPI_CLK 12
-#define SPI_CS1 10
+#define INTERFACE_SPI_CS1 10
 
 #define SPI_BUFFER_SIZE 255
 
@@ -110,12 +110,36 @@
 /**
  * @brief Nombre de phase dans une période de la base de temps (1 si pas utilisé)
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES_DANS_LOOP 1
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES_DANS_LOOP 2
+
+
+
+/**
+ * @brief Phase pour la communication SPI
+ * 
+ */
+#define INTERFACESPI_TRANSACTION 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 4
 
 
 
@@ -134,17 +158,13 @@
  * @brief Numéro de phase du processus PWM
  */
 #define PROCESSUSPWM_PHASE 2
-/**
- * @brief Phase pour la communication SPI
- * 
- */
-#define INTERFACESPI_TRANSACTION 3
+
 
 /**
  * @brief Phase pour la communication
  * 
  */
-#define PROCESSUSCOMMUNICATION 4
+#define PROCESSUSCOMMUNICATION 3
 
 
 #define PROCESSUSCLIGNOTANT_TEMPS_ALLUME_EN_MS 1000

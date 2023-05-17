@@ -21,7 +21,7 @@ int Processus_Communication_initialise(void)
 {
 
     interface_NEOPIXEL_allume(0, 0, 100);
-    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
+    serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Set_New_Com;
     
     return 0;
 }
@@ -41,7 +41,7 @@ void processus_Communication_Att_Lire()
 void processus_Communication_Lire()
 {
     Serial.print("Data Received: ");
-    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
+    for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
     {
         Serial.print(interface_SPI_Struct.spi_slave_rx_buf[i]);
     }
@@ -58,7 +58,7 @@ void processus_Communication_Set_New_Com()
 {
     for(int i = 0; i < SPI_BUFFER_SIZE; i++)
     {
-        interface_SPI_Struct.spi_slave_tx_buf[i] = i;
+        interface_SPI_Struct.spi_slave_tx_buf[i] = 'A';
     }
 
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;

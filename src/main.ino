@@ -71,21 +71,21 @@ void main_initialise(void)
   serviceTaskServer_initialise();
   serviceBaseDeTemps_initialise();
 
-  piloteEntree1_initialise();
+  //piloteEntree1_initialise();
   pilote_NEOPIXEL_initialise(); 
-  pilote_I2C_Initialise();
-  pilote_PWM_Initialise();
-  pilote_GPIO_Initialise();
+  //pilote_I2C_Initialise();
+  //pilote_PWM_Initialise();
+  //pilote_GPIO_Initialise();
 
   //interfaceEntree1_initialise();
   interface_NEOPIXEL_initialise();
-  interface_Accelerometre_initialise();
-  interface_PWM_Initialise();
+  //interface_Accelerometre_initialise();
+  //interface_PWM_Initialise();
   interface_GPIO_Initialise();
   interface_SPI_SLAVE_initialise();
 
   //processusClignotant_initialise();
-  Processus_Controle_initialise();
+  //Processus_Controle_initialise();
   Processus_Communication_initialise();
 }
 
