@@ -29,6 +29,7 @@
 #include "Pilote_I2C.h"
 #include "pilote_PWM.h"
 #include "pilote_GPIO.h"
+#include "Pilote_ADC.h"
 //#include "pilote_SPI.h"
 
 
@@ -73,6 +74,7 @@ void main_initialise(void)
 
   //piloteEntree1_initialise();
   pilote_NEOPIXEL_initialise(); 
+  //pilote_ADC_Initialise();
   //pilote_I2C_Initialise();
   //pilote_PWM_Initialise();
   //pilote_GPIO_Initialise();

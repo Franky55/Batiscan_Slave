@@ -60,6 +60,26 @@
 #define GPIO10_TEMPS_POUR_RESET_EN_MS 5000
 
 
+#define POWER_BAT 4
+#define PRESSION 5
+#define TEMPERATURE 6
+#define INT 9
+#define DRIVE_MOTEUR 15
+#define DRIVE_BALLAST 16
+#define SERVO_X 17
+#define SERVO_Y 18
+#define SERVO_GA 21
+#define SERVO_GR 35
+#define SERVO_DA 36
+#define SERVO_DR 37
+#define SERVO_H 38
+#define SERVO_S 39
+#define EAU 40
+#define LUMIERE_D 41
+#define LUMIERE_G 42
+#define VALVE 46
+#define CONTROL_POWER_CAM 47
+
 
 
 
@@ -87,6 +107,7 @@
 #define SPI_MOSI 11
 #define SPI_CLK 12
 #define INTERFACE_SPI_CS1 10
+#define INTERFACE_SPI_CS2 14
 
 #define SPI_BUFFER_SIZE 255
 
