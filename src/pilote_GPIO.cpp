@@ -7,6 +7,16 @@ int pilote_GPIO_Initialise()
 {
     pinMode(47, OUTPUT);
     digitalWrite(47, LOW);
+
+    pinMode(VALVE, OUTPUT);
+    digitalWrite(VALVE, LOW);
+
+    pinMode(LUMIERE_D, OUTPUT);
+    digitalWrite(LUMIERE_D, LOW);
+
+    pinMode(LUMIERE_G, OUTPUT);
+    digitalWrite(LUMIERE_G, LOW);
+
     return 0;
 }
 

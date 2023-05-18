@@ -8,7 +8,7 @@
 #include "interface_GPIO.h"
 #include "interface_NEOPIXEL.h"
 #include "serviceBaseDeTemps.h"
-#include "pilote_PWM.h"
+#include "interface_PWM.h"
 
 #include "processusClignotant.h"
 #include <stdio.h>
@@ -47,10 +47,18 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
   }
   // Test Code Go here
 
+  digitalWrite(DIRECTION_BALLAST, HIGH);
+  interface_PWM_Struct.Ballast_value = 90;
+  analogWrite(DRIVE_BALLAST, 255);
+
+
   // END test Code 
   interface_NEOPIXEL_allume(10, 10, 10);
   interface_GPIO_Write(47, HIGH);
-  write_PWM(DRIVE_MOTEUR, 120);
+  interface_GPIO_Write(VALVE, HIGH);
+  digitalWrite(LUMIERE_G, HIGH);
+  digitalWrite(LUMIERE_D, HIGH);
+  interface_PWM_Struct.Drive_value = 120;
   //digitalWrite(SPI_CS1, HIGH);
   Serial.println("ALLUME");
   processusClignotant_compteur = 0;
@@ -65,9 +73,23 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
     return;
   }
 
+
+  // Test Code Go here
+
+  digitalWrite(DIRECTION_BALLAST, HIGH);
+  interface_PWM_Struct.Ballast_value = 0;
+  analogWrite(DRIVE_BALLAST, 0);
+
+
+  // END test Code 
+
+
   interface_NEOPIXEL_eteint();
   interface_GPIO_Write(47, LOW);
-  write_PWM(DRIVE_MOTEUR, 92);
+  interface_GPIO_Write(VALVE, LOW);
+  digitalWrite(LUMIERE_G, LOW);
+  digitalWrite(LUMIERE_D, LOW);
+  interface_PWM_Struct.Drive_value = 92;
   Serial.println("ETEINT");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDAllumerLeTemoinLumineux;

@@ -30,6 +30,8 @@ int pilote_PWM_Initialise()
     digitalWrite(SERVO_H,  LOW);
     digitalWrite(SERVO_S,  LOW);
 
+    digitalWrite(DIRECTION_BALLAST,  LOW);
+
     //digitalWrite(DRIVE_MOTEUR,  LOW);
 
     
@@ -44,6 +46,8 @@ int pilote_PWM_Initialise()
     pinMode(SERVO_S,  OUTPUT);
 
     pinMode(DRIVE_MOTEUR,  OUTPUT);
+    pinMode(DRIVE_BALLAST, OUTPUT);
+    pinMode(DIRECTION_BALLAST, OUTPUT);
     //write_PWM(DRIVE_MOTEUR, 90);
     //write_PWM_Frequency(DRIVE_MOTEUR, 400);
     // write_PWM_Frequency(DRIVE_MOTEUR, 1500);//1100-1475,   1525-1900
@@ -55,18 +59,6 @@ int pilote_PWM_Initialise()
 
 float write_PWM(int servoPin, int value)
 {
-    return pwm.writeServo(servoPin, value, speed1, ke1);
+    return pwm.writeServo(servoPin, value);
 }
 
-
-/**
- * @brief La fonction va mettre la bonne frequence demande et retourne la valeur de la frequence
- * 
- * @param servoPin 
- * @param frequency 
- * @return float 
- */
-float write_PWM_Frequency(int servoPin, int frequency)
-{
-    return pwm.write(servoPin, 127, frequency, 8);
-}

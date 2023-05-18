@@ -33,10 +33,7 @@ void MoveServo()
 {
   compteurPWM++;
 
-  if (compteurPWM < 5)
-  {
-    return;
-  }
+  
 
   compteurPWM =0;
 
@@ -58,7 +55,13 @@ void MoveServo()
     }
 
 
-    interface_Write_PWM(cycle);
+    interface_PWM_Struct.SERVO_DA_angle = cycle;
+    interface_PWM_Struct.SERVO_DR_angle = cycle;
+    interface_PWM_Struct.SERVO_GA_angle = cycle;
+    interface_PWM_Struct.SERVO_GR_angle = cycle;
+    interface_PWM_Struct.SERVO_H_angle = cycle;
+    interface_PWM_Struct.SERVO_S_angle = cycle;
+    interface_PWM_Struct.SERVO_X_angle = cycle;
 }
 
 

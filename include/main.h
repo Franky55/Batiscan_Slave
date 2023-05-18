@@ -66,6 +66,7 @@
 #define INT 9
 #define DRIVE_MOTEUR 15
 #define DRIVE_BALLAST 16
+#define DIRECTION_BALLAST 1
 #define SERVO_X 17
 #define SERVO_Y 18
 #define SERVO_GA 21
@@ -160,7 +161,7 @@
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 4
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
 
 
 
@@ -187,6 +188,15 @@
  */
 #define PROCESSUSCOMMUNICATION 3
 
+
+/**
+ * @brief Phase pour update les servos moteurs
+ * 
+ */
+#define INTERFACE_UPDATE_PWM 4
+
+
+#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 100
 
 #define PROCESSUSCLIGNOTANT_TEMPS_ALLUME_EN_MS 5000
 #define PROCESSUSCLIGNOTANT_TEMPS_ETEINT_EN_MS 5000
