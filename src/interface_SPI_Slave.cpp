@@ -40,7 +40,7 @@ void interface_SPI_WaitForMaster()
 {
     interface_Compteur_Master_Connecte++;
     digitalWrite(GPIO10, LOW);
-    interface_NEOPIXEL_allume(50, 10, 0);
+    //interface_NEOPIXEL_allume(50, 10, 0);
     if (interface_Compteur_Master_Connecte < INTERFACEGPIO10_COMPTE)
     {
         return;
@@ -59,11 +59,8 @@ void interface_SPI_WaitForMaster()
 
 void interface_SPI_Queue_Transaction()
 {
-    interface_NEOPIXEL_allume(50, 10, 0);
-    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
-    {
-        interface_SPI_Struct.spi_slave_tx_buf[i] = 'A';
-    }
+    //interface_NEOPIXEL_allume(0, 10, 0);
+
 
     
     slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 3);
@@ -80,11 +77,11 @@ void interface_SPI_Data_Available()
     //interface_NEOPIXEL_allume(100, 0, 0);
 
     //Serial.println(digitalRead(GPIO10));
-    interface_NEOPIXEL_allume(100, 0, 0);
+    //interface_NEOPIXEL_allume(100, 0, 0);
 
     if(slave.available())
     {
-        interface_NEOPIXEL_allume(0, 100, 100);
+        //interface_NEOPIXEL_allume(0, 100, 100);
         serviceBaseDeTemps_executeDansLoop[INTERFACESPI_TRANSACTION] = interface_SPI_ReadData;
     }
     
@@ -94,7 +91,7 @@ void interface_SPI_Data_Available()
 
 void interface_SPI_ReadData()
 {
-    interface_NEOPIXEL_allume(0, 100, 0);
+    //interface_NEOPIXEL_allume(0, 100, 0);
     interface_SPI_Struct.spi_message_size = slave.size();
     for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
     {

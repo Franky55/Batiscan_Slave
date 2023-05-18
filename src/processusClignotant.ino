@@ -8,6 +8,7 @@
 #include "interface_GPIO.h"
 #include "interface_NEOPIXEL.h"
 #include "serviceBaseDeTemps.h"
+#include "pilote_PWM.h"
 
 #include "processusClignotant.h"
 #include <stdio.h>
@@ -39,17 +40,17 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void);
 void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
 {
   processusClignotant_compteur++;
-  processusClignotant_compteur = 0;
+  
   if (processusClignotant_compteur < PROCESSUSCLIGNOTANT_COMPTE_POUR_ALLUME)
   {
     return;
   }
   // Test Code Go here
 
-  unsigned char * tabTemp;
   // END test Code 
   interface_NEOPIXEL_allume(10, 10, 10);
   interface_GPIO_Write(47, HIGH);
+  write_PWM(DRIVE_MOTEUR, 120);
   //digitalWrite(SPI_CS1, HIGH);
   Serial.println("ALLUME");
   processusClignotant_compteur = 0;
@@ -66,6 +67,7 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
 
   interface_NEOPIXEL_eteint();
   interface_GPIO_Write(47, LOW);
+  write_PWM(DRIVE_MOTEUR, 92);
   Serial.println("ETEINT");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDAllumerLeTemoinLumineux;

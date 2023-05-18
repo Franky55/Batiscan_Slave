@@ -74,20 +74,20 @@ void main_initialise(void)
 
   //piloteEntree1_initialise();
   pilote_NEOPIXEL_initialise(); 
-  //pilote_ADC_Initialise();
-  //pilote_I2C_Initialise();
-  //pilote_PWM_Initialise();
-  //pilote_GPIO_Initialise();
+  pilote_ADC_Initialise();
+  pilote_I2C_Initialise();
+  pilote_PWM_Initialise();
+  pilote_GPIO_Initialise();
 
   //interfaceEntree1_initialise();
   interface_NEOPIXEL_initialise();
-  //interface_Accelerometre_initialise();
-  //interface_PWM_Initialise();
+  interface_Accelerometre_initialise();
+  interface_PWM_Initialise();
   interface_GPIO_Initialise();
   interface_SPI_SLAVE_initialise();
 
-  //processusClignotant_initialise();
-  //Processus_Controle_initialise();
+  processusClignotant_initialise();
+  Processus_Controle_initialise();
   Processus_Communication_initialise();
 }
 
