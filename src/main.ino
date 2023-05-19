@@ -44,11 +44,17 @@
 #include "interface_PWM.h"
 #include "interface_SPI_Slave.h"
 #include "interface_GPIO.h"
+#include "interface_Temperature.h"
+#include "interface_CapteurEau.h"
+#include "interface_Pression.h"
+#include "interface_Niveau_Batterie.h"
+
 
 // Include des processus
 #include "processusClignotant.h"
 #include "Processus_Controle.h"
 #include "Processus_Communication.h"
+#include "processus_Urgence.h"
 
 //Definitions privees
 //pas de definitions privees
@@ -87,8 +93,9 @@ void main_initialise(void)
   interface_SPI_SLAVE_initialise();
 
   processusClignotant_initialise();
-  Processus_Controle_initialise();
+  //Processus_Controle_initialise();
   Processus_Communication_initialise();
+  Processus_Urgence_initialise();
 }
 
 void setup(void) 

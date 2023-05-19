@@ -15,3 +15,9 @@ int interface_GPIO_Write(int pin, bool etat)
     digitalWrite(pin, etat);
     return 0;
 }
+
+int interface_GPIO_Read(int pin, bool * etat)
+{
+    *etat = digitalRead(pin);
+    return 0;
+}

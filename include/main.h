@@ -54,6 +54,8 @@
 
 
 
+#define GROSSEUR_TAB_MOYENNE 10
+
 
 
 #define GPIO10 10
@@ -161,7 +163,7 @@
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 6
 
 
 
@@ -195,8 +197,30 @@
  */
 #define INTERFACE_UPDATE_PWM 4
 
+/**
+ * @brief La phase qui détermine s'il faut sauter à l'eau
+ * 
+ */
+#define PROCESSUS_URGENCE_PHASE 5
 
+
+
+
+
+/**
+ * @brief À chaque 100 ms un nouveau servo moteur se fait update
+ * Ils ne peuvent pas être en meme temps sinon manque de courant
+ * Cause Frank is a big dumm dumm
+ * 
+ * My circuit goes: Nuh huh
+ * 
+ */
 #define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 100
+
+
+
+#define PROCESSUSURGENCE_LECTURE_UPDATE_EN_MS 100
+
 
 #define PROCESSUSCLIGNOTANT_TEMPS_ALLUME_EN_MS 5000
 #define PROCESSUSCLIGNOTANT_TEMPS_ETEINT_EN_MS 5000

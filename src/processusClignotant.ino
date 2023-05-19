@@ -58,7 +58,7 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
   interface_GPIO_Write(VALVE, HIGH);
   digitalWrite(LUMIERE_G, HIGH);
   digitalWrite(LUMIERE_D, HIGH);
-  interface_PWM_Struct.Drive_value = 120;
+  interface_PWM_Struct.Drive_value = 150;
   //digitalWrite(SPI_CS1, HIGH);
   Serial.println("ALLUME");
   processusClignotant_compteur = 0;

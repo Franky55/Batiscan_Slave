@@ -14,7 +14,5 @@ int pilote_ADC_Initialise()
 
 int pilote_ADC_AnalogRead(int pin)
 {
-    
-
     return analogRead(pin);;
 }
