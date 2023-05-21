@@ -53,7 +53,6 @@ void processus_Urgence_Lecture_Capteur()
     Serial.print(val2);
     Serial.print("\n");
     
-
 }
 
 

@@ -8,13 +8,17 @@ INTERFACE_Temperature interface_Temperature_Struct;
 
 #define OFFSET -408
 
+void interface_TEMPERATURE_Verification_TEMPERATURE(int valeur);
+
+
 int interface_TEMPERATURE_Initialise()
 {
+    interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
     return 0;
 }
 
 /**
- * @brief La fonction met la valeur de la temperature dans le parametre
+ * @brief La fonction lit la temperature et met la valeur de la temperature dans le parametre
  * 
  * @param valeur 
  * @return int 
@@ -46,6 +50,7 @@ int interface_TEMPERATURE_Read(int *valeur)
     *valeur = (int)moyenne;
     interface_Temperature_Struct.temperature = (int)moyenne;
 
+    interface_TEMPERATURE_Verification_TEMPERATURE((int)moyenne);
 
     switch(interface_Temperature_Struct.unite)
     {
@@ -64,4 +69,25 @@ int interface_TEMPERATURE_Read(int *valeur)
 
 
     return moyenne;
+}
+
+
+
+void interface_TEMPERATURE_Verification_TEMPERATURE(int valeur)
+{
+    switch (valeur)
+    {
+    case TEMPERATURE_MIN:
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
+    break;
+    
+    case TEMPERATURE_ELEVEE :
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_MOYEN;
+    break;
+    
+    case TEMPERATURE_MAX :
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_URGENT;
+    break;
+    
+    }
 }
