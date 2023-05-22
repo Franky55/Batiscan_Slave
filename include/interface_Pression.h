@@ -10,6 +10,7 @@
  */
 typedef struct 
 {
+    unsigned char niveau_Urgence;
     unsigned char unite;
     int tab_Moyenne_Pression[GROSSEUR_TAB_MOYENNE];
     int pression;

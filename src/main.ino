@@ -55,6 +55,7 @@
 #include "Processus_Controle.h"
 #include "Processus_Communication.h"
 #include "processus_Urgence.h"
+#include "processus_Calcule_Accelerometre.h"
 
 //Definitions privees
 //pas de definitions privees
@@ -93,9 +94,10 @@ void main_initialise(void)
   interface_SPI_SLAVE_initialise();
 
   processusClignotant_initialise();
-  //Processus_Controle_initialise();
+  Processus_Controle_initialise();
   Processus_Communication_initialise();
   Processus_Urgence_initialise();
+  processus_Calcule_Accelerometre_initialise();
 }
 
 void setup(void) 

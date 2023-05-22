@@ -45,13 +45,13 @@ void processus_Urgence_Lecture_Capteur()
 
     int val = 0;
     bool val2;
-    //interface_PRESSION_Read(&val);
-    //interface_TEMPERATURE_Read(&val);
+    interface_PRESSION_Read(&val);
+    interface_TEMPERATURE_Read(&val);
     interface_CAPTEUREAU_Read(&val2);
 
-    Serial.print("EAU: ");
-    Serial.print(val2);
-    Serial.print("\n");
+    // Serial.print("EAU: ");
+    // Serial.print(val2);
+    // Serial.print("\n");
     
 }
 

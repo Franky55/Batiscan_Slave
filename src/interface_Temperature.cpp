@@ -72,22 +72,27 @@ int interface_TEMPERATURE_Read(int *valeur)
 }
 
 
-
+/**
+ * @brief La fonction determine le niveau d'urgence
+ * 
+ * @param valeur 
+ */
 void interface_TEMPERATURE_Verification_TEMPERATURE(int valeur)
 {
-    switch (valeur)
+    if(valeur < TEMPERATURE_MIN)
     {
-    case TEMPERATURE_MIN:
-        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
-    break;
-    
-    case TEMPERATURE_ELEVEE :
-        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_MOYEN;
-    break;
-    
-    case TEMPERATURE_MAX :
         interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_URGENT;
-    break;
-    
+    }
+    else if(valeur >= TEMPERATURE_MAX)
+    {
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_URGENT;
+    }
+    else if(valeur >= TEMPERATURE_ELEVEE)
+    {
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_MOYEN;
+    }
+    else
+    {
+        interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
     }
 }

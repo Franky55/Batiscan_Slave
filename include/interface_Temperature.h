@@ -5,6 +5,7 @@
 
 typedef struct 
 {
+    unsigned char niveau_Urgence;
     unsigned char unite;
     int tab_Moyenne_Temperature[GROSSEUR_TAB_MOYENNE];
     int temperature;

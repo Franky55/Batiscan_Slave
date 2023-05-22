@@ -47,9 +47,8 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
   }
   // Test Code Go here
 
-  digitalWrite(DIRECTION_BALLAST, HIGH);
-  interface_PWM_Struct.Ballast_value = 90;
-  analogWrite(DRIVE_BALLAST, 255);
+  
+  
 
 
   // END test Code 
@@ -60,7 +59,7 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
   digitalWrite(LUMIERE_D, HIGH);
   interface_PWM_Struct.Drive_value = 150;
   //digitalWrite(SPI_CS1, HIGH);
-  Serial.println("ALLUME");
+  //Serial.println("ALLUME");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDEteindreLeTemoinLumineux;
 }
@@ -76,9 +75,6 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
 
   // Test Code Go here
 
-  digitalWrite(DIRECTION_BALLAST, HIGH);
-  interface_PWM_Struct.Ballast_value = 0;
-  analogWrite(DRIVE_BALLAST, 0);
 
 
   // END test Code 
@@ -90,7 +86,7 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
   digitalWrite(LUMIERE_G, LOW);
   digitalWrite(LUMIERE_D, LOW);
   interface_PWM_Struct.Drive_value = 92;
-  Serial.println("ETEINT");
+  //Serial.println("ETEINT");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDAllumerLeTemoinLumineux;
 }

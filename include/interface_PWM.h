@@ -21,6 +21,7 @@ typedef struct
 
 int interface_PWM_Initialise();
 void interface_PWM_Write(int servoPin, int value);
+void interface_Analogue_Write(int servoPin, int value);
 
 
 extern INTERFACE_PWM interface_PWM_Struct;

@@ -4,6 +4,9 @@
 #include "interface_Pression.h"
 
 
+void interface_PRESSION_Verification_Pression(int valeur);
+
+
 INTERFACE_Pression interface_Pression_Struct;
 
 
@@ -48,6 +51,8 @@ int interface_PRESSION_Read(int *valeur)
     *valeur = moyenne;
     interface_Pression_Struct.pression = moyenne;
 
+    interface_PRESSION_Verification_Pression(moyenne);
+
     switch(interface_Pression_Struct.unite)
     {
         case 0:
@@ -63,8 +68,28 @@ int interface_PRESSION_Read(int *valeur)
         break;
     }
 
-
-
-    
     return moyenne;
+}
+
+
+/**
+ * @brief La fonction determine le niveau d'urgence
+ * 
+ * @param valeur 
+ */
+void interface_PRESSION_Verification_Pression(int valeur)
+{
+
+    if(valeur > PRESSION_MAX)
+    {
+        interface_Pression_Struct.niveau_Urgence = NIVEAU_URGENCE_URGENT;
+    }
+    else if(valeur < PRESSION_MIN)
+    {
+        interface_Pression_Struct.niveau_Urgence = NIVEAU_URGENCE_URGENT;
+    }
+    else
+    {
+        interface_Pression_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
+    }
 }

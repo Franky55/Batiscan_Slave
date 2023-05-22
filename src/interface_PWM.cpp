@@ -40,7 +40,7 @@ void interface_PWM_Update_Moteur()
  
 
     write_PWM(DRIVE_MOTEUR, interface_PWM_Struct.Drive_value);
-    //write_PWM(DRIVE_BALLAST, interface_PWM_Struct.Ballast_value);
+    analogWrite(DRIVE_BALLAST, interface_PWM_Struct.Ballast_value);
 
     serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Avant;
 }
@@ -117,9 +117,79 @@ void interface_PWM_Update_Ya()
 }
 
 
+
+
+
+
 void interface_PWM_Write(int servoPin, int value)
 {
+    switch (servoPin)
+    {
+    case SERVO_X:
+        interface_PWM_Struct.SERVO_X_angle = value;
+    break;
+    case SERVO_GA:
+        interface_PWM_Struct.SERVO_GA_angle = value;
+    break;
+    case SERVO_GR:
+        interface_PWM_Struct.SERVO_GR_angle = value;
+    break;
+    case SERVO_DA:
+        interface_PWM_Struct.SERVO_DA_angle = value;
+    break;
+    case SERVO_DR:
+        interface_PWM_Struct.SERVO_DR_angle = value;
+    break;
+    case SERVO_H:
+        interface_PWM_Struct.SERVO_H_angle = value;
+    break;
+    case SERVO_S:
+        interface_PWM_Struct.SERVO_S_angle = value;
+    break;
+    case DRIVE_BALLAST:
+        interface_PWM_Struct.Ballast_value = value;
+    break;
+    case DRIVE_MOTEUR:
+        interface_PWM_Struct.Drive_value = value;
+    break;
+    }
+
     write_PWM(servoPin, value);
 }
 
+void interface_Analogue_Write(int servoPin, int value)
+{
 
+    switch (servoPin)
+    {
+    case SERVO_X:
+        interface_PWM_Struct.SERVO_X_angle = value;
+    break;
+    case SERVO_GA:
+        interface_PWM_Struct.SERVO_GA_angle = value;
+    break;
+    case SERVO_GR:
+        interface_PWM_Struct.SERVO_GR_angle = value;
+    break;
+    case SERVO_DA:
+        interface_PWM_Struct.SERVO_DA_angle = value;
+    break;
+    case SERVO_DR:
+        interface_PWM_Struct.SERVO_DR_angle = value;
+    break;
+    case SERVO_H:
+        interface_PWM_Struct.SERVO_H_angle = value;
+    break;
+    case SERVO_S:
+        interface_PWM_Struct.SERVO_S_angle = value;
+    break;
+    case DRIVE_BALLAST:
+        interface_PWM_Struct.Ballast_value = value;
+    break;
+    case DRIVE_MOTEUR:
+        interface_PWM_Struct.Drive_value = value;
+    break;
+    }
+
+    analogWrite(servoPin, value);
+}
