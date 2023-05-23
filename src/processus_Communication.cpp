@@ -70,7 +70,15 @@ void processus_Communication_Set_New_Com()
 {
     for(int i = 0; i < SPI_BUFFER_SIZE; i++)
     {
-        interface_SPI_Struct.spi_slave_tx_buf[i] = 'A';
+        if(interface_GPIO_Struct.Lumiere_D == 0)
+        {
+            interface_SPI_Struct.spi_slave_tx_buf[i] = '0';
+        }
+        if(interface_GPIO_Struct.Lumiere_D == 1)
+        {
+            interface_SPI_Struct.spi_slave_tx_buf[i] = '1';
+        }
+        
     }
     interface_SPI_Struct.trameReady = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;

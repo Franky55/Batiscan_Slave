@@ -54,6 +54,9 @@ void interface_SPI_WaitForMaster()
     pinMode(INTERFACE_SPI_CS1, INPUT);
     pinMode(SPI_CLK, INPUT);
     pinMode(SPI_MOSI, INPUT);
+    pinMode(GPIO_NUM_48, OUTPUT);
+    digitalWrite(GPIO_NUM_48, LOW);
+
     //interface_NEOPIXEL_allume(0, 100, 0);
 
     interface_Compteur_Master_Connecte = 0;
@@ -74,13 +77,10 @@ void interface_SPI_Queue_Transaction()
     slave.end();
     slave.setDataMode(SPI_MODE0);
     slave.begin(SPI2_HOST, SPI_CLK, SPI_MISO, SPI_MOSI, INTERFACE_SPI_CS1);
-    slave.setQueueSize(5);
+    slave.setQueueSize(1);
     interface_SPI_Struct.trameReady = 0;
     slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 5);
-    slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 5);
-    slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 5);
-    slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 5);
-    slave.queue(RAW_RX_buf, interface_SPI_Struct.spi_slave_tx_buf, 5);
+
     
     
 
@@ -100,6 +100,7 @@ void interface_SPI_Data_Available()
     if(slave.available())
     {
         //interface_NEOPIXEL_allume(0, 100, 100);
+        
         interface_SPI_ReadData();
         //serviceBaseDeTemps_executeDansLoop[INTERFACESPI_TRANSACTION] = interface_SPI_ReadData;
     }
@@ -111,7 +112,13 @@ void interface_SPI_Data_Available()
 void interface_SPI_ReadData()
 {
     //interface_NEOPIXEL_allume(0, 100, 0);
+    
     interface_SPI_Struct.spi_message_size = (unsigned char)slave.size();
+
+    if(interface_SPI_Struct.spi_message_size == 0)
+    {
+        digitalWrite(GPIO_NUM_48, HIGH);
+    }
     Serial.print("Data Received ");
     Serial.print(interface_SPI_Struct.spi_message_size);
     Serial.print(" : ");
@@ -135,7 +142,7 @@ void interface_SPI_ReadData()
     interface_SPI_Struct.etatDuModule = 1;
     
 
-    
+    digitalWrite(GPIO_NUM_48, LOW);
 
     serviceBaseDeTemps_executeDansLoop[INTERFACESPI_TRANSACTION] = interface_SPI_Queue_Transaction;
 
