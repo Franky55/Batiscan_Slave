@@ -53,10 +53,7 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
 
   // END test Code 
   interface_NEOPIXEL_allume(10, 10, 10);
-  interface_GPIO_Write(47, HIGH);
-  interface_GPIO_Write(VALVE, HIGH);
-  digitalWrite(LUMIERE_G, HIGH);
-  digitalWrite(LUMIERE_D, HIGH);
+
   interface_PWM_Struct.Drive_value = 150;
   //digitalWrite(SPI_CS1, HIGH);
   //Serial.println("ALLUME");
@@ -72,7 +69,7 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
     return;
   }
 
-
+  
   // Test Code Go here
 
 
@@ -81,10 +78,7 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
 
 
   interface_NEOPIXEL_eteint();
-  interface_GPIO_Write(47, LOW);
-  interface_GPIO_Write(VALVE, LOW);
-  digitalWrite(LUMIERE_G, LOW);
-  digitalWrite(LUMIERE_D, LOW);
+
   interface_PWM_Struct.Drive_value = 92;
   //Serial.println("ETEINT");
   processusClignotant_compteur = 0;

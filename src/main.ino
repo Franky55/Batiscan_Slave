@@ -56,6 +56,7 @@
 #include "Processus_Communication.h"
 #include "processus_Urgence.h"
 #include "processus_Calcule_Accelerometre.h"
+#include "Processus_Ballast.h"
 
 //Definitions privees
 //pas de definitions privees
@@ -93,11 +94,12 @@ void main_initialise(void)
   interface_GPIO_Initialise();
   interface_SPI_SLAVE_initialise();
 
-  processusClignotant_initialise();
+  //processusClignotant_initialise();
   Processus_Controle_initialise();
   Processus_Communication_initialise();
   Processus_Urgence_initialise();
   processus_Calcule_Accelerometre_initialise();
+  processus_Ballast_initialise();
 }
 
 void setup(void) 

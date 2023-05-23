@@ -6,6 +6,7 @@
 typedef struct
 {
     unsigned char etatDuModule; 
+    unsigned char trameReady;
     unsigned char spi_message_size; 
     unsigned char spi_slave_tx_buf[SPI_BUFFER_SIZE];
     unsigned char spi_slave_rx_buf[SPI_BUFFER_SIZE];

@@ -17,7 +17,7 @@ typedef struct
 
 
 
-int processus_Ballst_initialise(void);
+int processus_Ballast_initialise(void);
 
 extern PROCESSUS_BALLAST processus_Ballast_Struct;
 #endif

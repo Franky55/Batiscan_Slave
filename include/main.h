@@ -249,7 +249,7 @@
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 7
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 8
 
 
 /**
@@ -291,7 +291,11 @@
  */
 #define PROCESSUS_GESTION_BALLAST 6
 
-
+/**
+ * @brief Phase pour update les GPIOS
+ * 
+ */
+#define INTERFACE_UPDATE_GPIO 7
 
 
 

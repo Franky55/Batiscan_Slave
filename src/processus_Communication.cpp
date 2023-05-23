@@ -2,6 +2,7 @@
 #include "main.h"
 #include "interface_NEOPIXEL.h"
 #include "interface_SPI_Slave.h"
+#include "interface_GPIO.h"
 #include "serviceBaseDeTemps.h"
 //#include "BFIO"
 #include <stdio.h>
@@ -40,12 +41,23 @@ void processus_Communication_Att_Lire()
 
 void processus_Communication_Lire()
 {
-    Serial.print("Data Received: ");
-    for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
+    // Serial.print("Data Received: ");
+    // for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
+    // {
+    //     Serial.print((char)interface_SPI_Struct.spi_slave_rx_buf[i]);
+    // }
+    // Serial.println("");
+
+    if(interface_SPI_Struct.spi_slave_rx_buf[3] == '1')
     {
-        Serial.print(interface_SPI_Struct.spi_slave_rx_buf[i]);
+        interface_NEOPIXEL_allume(10, 10, 10);
+        interface_GPIO_Struct.Lumiere_D = 1;
     }
-    Serial.println("");
+    if(interface_SPI_Struct.spi_slave_rx_buf[3] == '0')
+    {
+        interface_NEOPIXEL_eteint();
+        interface_GPIO_Struct.Lumiere_D = 0;
+    }
 
     interface_SPI_Struct.etatDuModule = 0;
 
@@ -60,7 +72,7 @@ void processus_Communication_Set_New_Com()
     {
         interface_SPI_Struct.spi_slave_tx_buf[i] = 'A';
     }
-
+    interface_SPI_Struct.trameReady = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
 }
 

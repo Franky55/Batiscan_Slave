@@ -26,7 +26,7 @@ void processus_Ballast_EMPTY_OUT();
 PROCESSUS_BALLAST processus_Ballast_Struct;
 
 
-int Processus_Ballast_initialise(void)
+int processus_Ballast_initialise(void)
 {
     processus_Ballast_Struct.limit_Switch_Bas = 0;
     processus_Ballast_Struct.limit_Switch_Haut = 0;

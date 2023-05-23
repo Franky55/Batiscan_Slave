@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
-    char hello[] = "ON";
+    char hello[] = "ON111";
     udp.beginPacket(remoteIP, remotePort);
     udp.write((uint8_t*)hello, strlen(hello));  // Typecast to uint8_t* for correct conversion
     udp.endPacket();
@@ -37,7 +37,7 @@ void loop() {
   delay(1000);
 
   if (WiFi.status() == WL_CONNECTED) {
-    char hello[] = "OFF";
+    char hello[] = "OFF00";
     udp.beginPacket(remoteIP, remotePort);
     udp.write((uint8_t*)hello, strlen(hello));  // Typecast to uint8_t* for correct conversion
     udp.endPacket();

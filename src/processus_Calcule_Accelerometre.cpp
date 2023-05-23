@@ -89,11 +89,11 @@ void processus_Calcule_Accelerometre_Affiche()
     //interface_Accelerometre_Rotation();
     
 
-    Serial.print(roll);
-    Serial.print("/");
-    Serial.print(pitch);//pas bon
-    Serial.print("/");
-    Serial.println(yaw);
+    // Serial.print(roll);
+    // Serial.print("/");
+    // Serial.print(pitch);//pas bon
+    // Serial.print("/");
+    // Serial.println(yaw);
 
     last_Pithc = pitch;
     last_Roll = roll;
