@@ -2,10 +2,10 @@
 #include <WiFiUdp.h>
 #include <SPI.h>
 
-const char* ssid = "Batiscan";
+const char* ssid = "equipe11";
 const char* password = "BATISCAN";
 const IPAddress MY_IP(192, 168, 4, 5);
-const IPAddress remoteIP(192, 168, 4, 4);
+const IPAddress remoteIP(192, 168, 4, 2);
 const IPAddress gateway(192, 168, 4, 1);
 const IPAddress subnet(255, 255, 255, 0);
 const int remotePort = 4210;
@@ -28,7 +28,7 @@ void setup() {
   }
 
   Serial.println("Connected to WiFi");
-  udp.begin(4210);  // Initialize UDP
+  udp.begin(4211);  // Initialize UDP
 
   Serial.print(WiFi.localIP());
   
@@ -36,7 +36,7 @@ void setup() {
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
-    char hello[] = "ON111";
+    char hello[] = "RRRR";
     udp.beginPacket(remoteIP, remotePort);
     udp.write((uint8_t*)hello, strlen(hello));  // Typecast to uint8_t* for correct conversion
     udp.endPacket();
@@ -44,25 +44,11 @@ void loop() {
   }
 
   delay(1000);
-  int val = udp.available();
-  Serial.println(val);
-
-  udp.read(tabBuffer, val);
-
-  if(tabBuffer[3] == '1')
-  {
-    digitalWrite(13, HIGH);
-  }
-
-  if(tabBuffer[3] == '0')
-  {
-    digitalWrite(13, LOW);
-  }
 
   
 
   if (WiFi.status() == WL_CONNECTED) {
-    char hello[] = "OFF00";
+    char hello[] = "GGGG";
     udp.beginPacket(remoteIP, remotePort);
     udp.write((uint8_t*)hello, strlen(hello));  // Typecast to uint8_t* for correct conversion
     udp.endPacket();
@@ -72,19 +58,17 @@ void loop() {
 
   delay(1000);
 
-  int val1 = udp.available();
-  Serial.println(val1);
-  udp.read(tabBuffer, val1);
-
-  if(tabBuffer[3] == '1')
-  {
-    digitalWrite(13, HIGH);
+  if (WiFi.status() == WL_CONNECTED) {
+    char hello[] = "BBBB";
+    udp.beginPacket(remoteIP, remotePort);
+    udp.write((uint8_t*)hello, strlen(hello));  // Typecast to uint8_t* for correct conversion
+    udp.endPacket();
+    Serial.println("Sent 'Hello'");
   }
 
-  if(tabBuffer[3] == '0')
-  {
-    digitalWrite(13, LOW);
-  }
 
+  delay(1000);
+
+  
   
 }
