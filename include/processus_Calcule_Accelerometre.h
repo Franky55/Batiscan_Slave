@@ -4,17 +4,24 @@
 typedef struct
 {
     unsigned char State;
-    unsigned char tabReceived[255];
-    int DataToRead;
-    int DataToSend;
-    int DataToSendSPI;
+    float Yaw;
+    float Pitch;
+    float Roll;
+
+    unsigned char Wanted_SERVO_GA_angle;
+    unsigned char Wanted_SERVO_GR_angle;
+    unsigned char Wanted_SERVO_DA_angle;
+    unsigned char Wanted_SERVO_DR_angle;
+    unsigned char Wanted_SERVO_H_angle;
+    unsigned char Wanted_SERVO_S_angle;
+
 }PROCESSUS_CALCULEACCELEROMETRE;
 
 
 
 
 int processus_Calcule_Accelerometre_initialise();
-void processus_Calcule_Accelerometre_Affiche();
+
 
 extern PROCESSUS_CALCULEACCELEROMETRE processus_Calcule_Accelerometre_Struct;
 #endif

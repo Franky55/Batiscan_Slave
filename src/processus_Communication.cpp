@@ -48,14 +48,19 @@ void processus_Communication_Lire()
     // }
     // Serial.println("");
 
-    if(interface_SPI_Struct.spi_slave_rx_buf[3] == '1')
+    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'R')
     {
-        interface_NEOPIXEL_allume(10, 10, 10);
+        interface_NEOPIXEL_allume(255, 0, 0);
         interface_GPIO_Struct.Lumiere_D = 1;
     }
-    if(interface_SPI_Struct.spi_slave_rx_buf[3] == '0')
+    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'G')
     {
-        interface_NEOPIXEL_eteint();
+        interface_NEOPIXEL_allume(0, 255, 0);
+        interface_GPIO_Struct.Lumiere_D = 0;
+    }
+    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'B')
+    {
+        interface_NEOPIXEL_allume(0, 0, 255);
         interface_GPIO_Struct.Lumiere_D = 0;
     }
 

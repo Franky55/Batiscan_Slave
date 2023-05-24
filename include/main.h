@@ -47,7 +47,7 @@
 
 
 #define GPIO10 10
-#define GPIO10_TEMPS_POUR_RESET_EN_MS 5000
+#define GPIO10_TEMPS_POUR_RESET_EN_MS 1000
 
 
 
@@ -265,7 +265,7 @@
 /**
  * @brief Numéro de phase du processus PWM
  */
-#define PROCESSUSPWM_PHASE 2
+#define PROCESSUS_CALCULE_ACCELERATION 2
 
 /**
  * @brief Phase pour la communication

@@ -101,34 +101,34 @@ int Get_Sensor_Event(sensors_event_t *a, sensors_event_t *g, sensors_event_t *te
 
 int interface_Accelerometre_Accelerometre(float *accAngleX, float *accAngleY)
 {
-  I2C.beginTransmission(ADDRESSE);
-  I2C.write(0x3B);
-  I2C.endTransmission(false);
-  I2C.requestFrom(ADDRESSE, 6, true);
-  float AccX = (I2C.read() << 8 | I2C.read()) / 16384.0;
-  float AccY = (I2C.read() << 8 | I2C.read()) / 16384.0;
-  float AccZ = (I2C.read() << 8 | I2C.read()) / 16384.0;
+  // I2C.beginTransmission(ADDRESSE);
+  // I2C.write(0x3B);
+  // I2C.endTransmission(false);
+  // I2C.requestFrom(ADDRESSE, 6, true);
+  // float AccX = (I2C.read() << 8 | I2C.read()) / 16384.0;
+  // float AccY = (I2C.read() << 8 | I2C.read()) / 16384.0;
+  // float AccZ = (I2C.read() << 8 | I2C.read()) / 16384.0;
 
-  *accAngleX = (atan(AccY / sqrt(pow(AccX, 2) + pow(AccZ, 2))) * 180 / PI) - 0.58; // AccErrorX ~(0.58) See the calculate_IMU_error()custom function for more details
-  *accAngleY = (atan(-1 * AccX / sqrt(pow(AccY, 2) + pow(AccZ, 2))) * 180 / PI) + 1.58; // AccErrorY ~(-1.58)
+  // *accAngleX = (atan(AccY / sqrt(pow(AccX, 2) + pow(AccZ, 2))) * 180 / PI) - 0.58; // AccErrorX ~(0.58) See the calculate_IMU_error()custom function for more details
+  // *accAngleY = (atan(-1 * AccX / sqrt(pow(AccY, 2) + pow(AccZ, 2))) * 180 / PI) + 1.58; // AccErrorY ~(-1.58)
   return 0;
 }
 
 
 int interface_Accelerometre__Gyroscope(float *GyroX, float *GyroY, float *GyroZ)
 {
-  I2C.beginTransmission(ADDRESSE);
-  I2C.write(0x43);
-  I2C.endTransmission(false);
-  I2C.requestFrom(ADDRESSE, 6, true);
-  *GyroX = (I2C.read() << 8 | I2C.read()) / 131.0;
-  *GyroY = (I2C.read() << 8 | I2C.read()) / 131.0;
-  *GyroZ = (I2C.read() << 8 | I2C.read()) / 131.0;
+  // I2C.beginTransmission(ADDRESSE);
+  // I2C.write(0x43);
+  // I2C.endTransmission(false);
+  // I2C.requestFrom(ADDRESSE, 6, true);
+  // *GyroX = (I2C.read() << 8 | I2C.read()) / 131.0;
+  // *GyroY = (I2C.read() << 8 | I2C.read()) / 131.0;
+  // *GyroZ = (I2C.read() << 8 | I2C.read()) / 131.0;
 
 
-  *GyroX = (*GyroX) + 0.56;  // GyroErrorX ~(-0.56)
-  *GyroY = (*GyroY) - 2;  // GyroErrorY ~(2)
-  *GyroZ = (*GyroZ) + 0.8;  // GyroErrorZ ~ (-0.8)
+  // *GyroX = (*GyroX) + 0.56;  // GyroErrorX ~(-0.56)
+  // *GyroY = (*GyroY) - 2;  // GyroErrorY ~(2)
+  // *GyroZ = (*GyroZ) + 0.8;  // GyroErrorZ ~ (-0.8)
   return 0;
 }
 
@@ -213,13 +213,13 @@ int interface_Accelerometre_Rotation()
 
 int Get_Sensor_Acc(float *AccX, float *AccY, float *AccZ)
 {
-    I2C.beginTransmission(ADDRESSE);
-    I2C.write(0x3B);
-    I2C.endTransmission(false);
-    I2C.requestFrom(ADDRESSE, 6, true);
-    *AccX = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
-    *AccY = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
-    *AccZ = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
+    // I2C.beginTransmission(ADDRESSE);
+    // I2C.write(0x3B);
+    // I2C.endTransmission(false);
+    // I2C.requestFrom(ADDRESSE, 6, true);
+    // *AccX = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
+    // *AccY = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
+    // *AccZ = (I2C.read() << 8 | I2C.read()) / 16384.0 ;
 
     return 0;
 }
@@ -228,13 +228,13 @@ int Get_Sensor_Acc(float *AccX, float *AccY, float *AccZ)
 
 int Get_Sensor_Gyro(float *GyroX, float *GyroY, float *GyroZ)
 {
-    I2C.beginTransmission(ADDRESSE);
-    I2C.write(0x43);
-    I2C.endTransmission(false);
-    I2C.requestFrom(ADDRESSE, 6, true);
-    *GyroX = (I2C.read() << 8 | I2C.read());
-    *GyroY = (I2C.read() << 8 | I2C.read());
-    *GyroZ = (I2C.read() << 8 | I2C.read());
+    // I2C.beginTransmission(ADDRESSE);
+    // I2C.write(0x43);
+    // I2C.endTransmission(false);
+    // I2C.requestFrom(ADDRESSE, 6, true);
+    // *GyroX = (I2C.read() << 8 | I2C.read());
+    // *GyroY = (I2C.read() << 8 | I2C.read());
+    // *GyroZ = (I2C.read() << 8 | I2C.read());
 
 
       
@@ -249,46 +249,46 @@ void calculate_IMU_error() {
   // We can call this funtion in the setup section to calculate the accelerometer and gyro data error. From here we will get the error values used in the above equations printed on the Serial Monitor.
   // Note that we should place the IMU flat in order to get the proper values, so that we then can the correct values
   // Read accelerometer values 200 times
-  int c = 0;
-  while (c < 200) {
-    float AccX = 0;
-    float AccY = 0;
-    float AccZ = 0;
-    Get_Sensor_Acc(&AccX, &AccY, &AccZ);
-    // Sum all readings
-    interface_Accelerometre_Struct.AccErrorX = interface_Accelerometre_Struct.AccErrorX + ((atan((AccY) / sqrt(pow((AccX), 2) + pow((AccZ), 2))) * 180 / PI));
-    interface_Accelerometre_Struct.AccErrorY = interface_Accelerometre_Struct.AccErrorY + ((atan(-1 * (AccX) / sqrt(pow((AccY), 2) + pow((AccZ), 2))) * 180 / PI));
-    c++;
-  }
-  //Divide the sum by 200 to get the error value
-  interface_Accelerometre_Struct.AccErrorX = interface_Accelerometre_Struct.AccErrorX / 200;
-  interface_Accelerometre_Struct.AccErrorY = interface_Accelerometre_Struct.AccErrorY / 200;
-  c = 0;
-  // Read gyro values 200 times
-  while (c < 200) {
-    float GyroX = 0;
-    float GyroY = 0;
-    float GyroZ = 0;
-    Get_Sensor_Gyro(&GyroX, &GyroY, &GyroZ);
-    // Sum all readings
-    interface_Accelerometre_Struct.GyroErrorX = interface_Accelerometre_Struct.GyroErrorX + (GyroX / 131.0);
-    interface_Accelerometre_Struct.GyroErrorY = interface_Accelerometre_Struct.GyroErrorY + (GyroY / 131.0);
-    interface_Accelerometre_Struct.GyroErrorZ = interface_Accelerometre_Struct.GyroErrorZ + (GyroZ / 131.0);
-    c++;
-  }
-  //Divide the sum by 200 to get the error value
-  interface_Accelerometre_Struct.GyroErrorX = interface_Accelerometre_Struct.GyroErrorX / 200;
-  interface_Accelerometre_Struct.GyroErrorY = interface_Accelerometre_Struct.GyroErrorY / 200;
-  interface_Accelerometre_Struct.GyroErrorZ = interface_Accelerometre_Struct.GyroErrorZ / 200;
-  // Print the error values on the Serial Monitor
-  Serial.print("AccErrorX: ");
-  Serial.println(interface_Accelerometre_Struct.AccErrorX);
-  Serial.print("AccErrorY: ");
-  Serial.println(interface_Accelerometre_Struct.AccErrorY);
-  Serial.print("GyroErrorX: ");
-  Serial.println(interface_Accelerometre_Struct.GyroErrorX);
-  Serial.print("GyroErrorY: ");
-  Serial.println(interface_Accelerometre_Struct.GyroErrorY);
-  Serial.print("GyroErrorZ: ");
-  Serial.println(interface_Accelerometre_Struct.GyroErrorZ);
+  // int c = 0;
+  // while (c < 200) {
+  //   float AccX = 0;
+  //   float AccY = 0;
+  //   float AccZ = 0;
+  //   Get_Sensor_Acc(&AccX, &AccY, &AccZ);
+  //   // Sum all readings
+  //   interface_Accelerometre_Struct.AccErrorX = interface_Accelerometre_Struct.AccErrorX + ((atan((AccY) / sqrt(pow((AccX), 2) + pow((AccZ), 2))) * 180 / PI));
+  //   interface_Accelerometre_Struct.AccErrorY = interface_Accelerometre_Struct.AccErrorY + ((atan(-1 * (AccX) / sqrt(pow((AccY), 2) + pow((AccZ), 2))) * 180 / PI));
+  //   c++;
+  // }
+  // //Divide the sum by 200 to get the error value
+  // interface_Accelerometre_Struct.AccErrorX = interface_Accelerometre_Struct.AccErrorX / 200;
+  // interface_Accelerometre_Struct.AccErrorY = interface_Accelerometre_Struct.AccErrorY / 200;
+  // c = 0;
+  // // Read gyro values 200 times
+  // while (c < 200) {
+  //   float GyroX = 0;
+  //   float GyroY = 0;
+  //   float GyroZ = 0;
+  //   Get_Sensor_Gyro(&GyroX, &GyroY, &GyroZ);
+  //   // Sum all readings
+  //   interface_Accelerometre_Struct.GyroErrorX = interface_Accelerometre_Struct.GyroErrorX + (GyroX / 131.0);
+  //   interface_Accelerometre_Struct.GyroErrorY = interface_Accelerometre_Struct.GyroErrorY + (GyroY / 131.0);
+  //   interface_Accelerometre_Struct.GyroErrorZ = interface_Accelerometre_Struct.GyroErrorZ + (GyroZ / 131.0);
+  //   c++;
+  // }
+  // //Divide the sum by 200 to get the error value
+  // interface_Accelerometre_Struct.GyroErrorX = interface_Accelerometre_Struct.GyroErrorX / 200;
+  // interface_Accelerometre_Struct.GyroErrorY = interface_Accelerometre_Struct.GyroErrorY / 200;
+  // interface_Accelerometre_Struct.GyroErrorZ = interface_Accelerometre_Struct.GyroErrorZ / 200;
+  // // Print the error values on the Serial Monitor
+  // Serial.print("AccErrorX: ");
+  // Serial.println(interface_Accelerometre_Struct.AccErrorX);
+  // Serial.print("AccErrorY: ");
+  // Serial.println(interface_Accelerometre_Struct.AccErrorY);
+  // Serial.print("GyroErrorX: ");
+  // Serial.println(interface_Accelerometre_Struct.GyroErrorX);
+  // Serial.print("GyroErrorY: ");
+  // Serial.println(interface_Accelerometre_Struct.GyroErrorY);
+  // Serial.print("GyroErrorZ: ");
+  // Serial.println(interface_Accelerometre_Struct.GyroErrorZ);
 }

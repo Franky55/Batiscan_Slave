@@ -20,6 +20,8 @@ int pilote_GPIO_Initialise()
     pinMode(DIRECTION_BALLAST, OUTPUT);
     digitalWrite(DIRECTION_BALLAST, HIGH);//dit la direction de la ballast
 
+    pinMode(GPIO_NUM_48, OUTPUT);
+
     return 0;
 }
 
