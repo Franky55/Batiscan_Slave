@@ -15,6 +15,13 @@ typedef struct
     unsigned char Wanted_SERVO_H_angle;
     unsigned char Wanted_SERVO_S_angle;
 
+    float Wrong_Way_GA_angle;
+    float Wrong_Way_GR_angle;
+    float Wrong_Way_DA_angle;
+    float Wrong_Way_DR_angle;
+    float Wrong_Way_H_angle;
+    float Wrong_Way_S_angle;
+
 }PROCESSUS_CALCULEACCELEROMETRE;
 
 

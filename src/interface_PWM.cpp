@@ -73,7 +73,7 @@ void interface_PWM_Update_Arriere()
     interface_PWM_compteur = 0;
 
     write_PWM(SERVO_GR, interface_PWM_Struct.SERVO_GR_angle);
-    write_PWM(SERVO_DR, interface_PWM_Struct.SERVO_GR_angle);
+    write_PWM(SERVO_DR, interface_PWM_Struct.SERVO_DR_angle);
 
     serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Cam;
 }

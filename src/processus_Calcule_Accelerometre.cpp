@@ -28,6 +28,14 @@ float elapsedTime, currentTime = 0, previousTime;
 
 int processus_Calcule_Accelerometre_initialise()
 {
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)1.0;
+
+
     processus_Calcule_Accelerometre_Offset();
     serviceBaseDeTemps_executeDansLoop[PROCESSUS_CALCULE_ACCELEROMETRE_PHASE] = processus_Calcule_Accelerometre_GetPosition;
     serviceBaseDeTemps_execute[PROCESSUS_CALCULE_ACCELERATION] = processus_Calcule_Accelerometre_Determine_Servo_Position;
@@ -74,20 +82,20 @@ void processus_Calcule_Accelerometre_GetPosition()
     currentTime = millis();            // Current time actual time read
     elapsedTime = (currentTime - previousTime) / 1000; // Divide by 1000 to get seconds
 
-    gyroX = gyroX + ((double)g.gyro.x  + 0.054113     ) * elapsedTime; // deg/s * s = deg
-    gyroY = gyroY + ((double)g.gyro.y  + 0.026281     ) * elapsedTime;
-    processus_Calcule_Accelerometre_Struct.Yaw =  processus_Calcule_Accelerometre_Struct.Yaw + ((double)g.gyro.z     + 0.008106       )   * elapsedTime;
+    gyroX = gyroX + ((float)g.gyro.x  + 0.054113     ) * elapsedTime; // deg/s * s = deg
+    gyroY = gyroY + ((float)g.gyro.y  + 0.026281     ) * elapsedTime;
+    processus_Calcule_Accelerometre_Struct.Yaw =  processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z     + 0.008106       )   * elapsedTime;
     // Complementary filter - combine acceleromter and gyro angle values
     processus_Calcule_Accelerometre_Struct.Roll = 0.96 * gyroX + 0.04 * a.acceleration.x;
     processus_Calcule_Accelerometre_Struct.Pitch =  0.96 * gyroY + 0.04 * a.acceleration.y;
     //interface_Accelerometre_Rotation();
     
 
-    Serial.print(processus_Calcule_Accelerometre_Struct.Roll);
-    Serial.print("/");
-    Serial.print(processus_Calcule_Accelerometre_Struct.Pitch);//pas bon
-    Serial.print("/");
-    Serial.println(processus_Calcule_Accelerometre_Struct.Yaw);
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Roll);
+    // Serial.print("/");
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Pitch);//pas bon
+    // Serial.print("/");
+    // Serial.println(processus_Calcule_Accelerometre_Struct.Yaw);
 
     // last_Pithc = processus_Calcule_Accelerometre_Struct.Pitch;
     // last_Roll = processus_Calcule_Accelerometre_Struct.Roll;
@@ -106,25 +114,30 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     // float wanted_Servo_Yaw = map_Float(processus_Calcule_Accelerometre_Struct.Yaw, -10.0, 10.0, 0.0, 180.0);
 
 
-    float DA_angle = processus_Calcule_Accelerometre_Struct.Pitch + processus_Calcule_Accelerometre_Struct.Roll;
+    float DA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
     float GA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
 
     float DR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
-    float GR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) - processus_Calcule_Accelerometre_Struct.Roll;
+    float GR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
 
     float H_angle = processus_Calcule_Accelerometre_Struct.Yaw + processus_Calcule_Accelerometre_Struct.Roll;
     float S_angle = processus_Calcule_Accelerometre_Struct.Yaw - processus_Calcule_Accelerometre_Struct.Roll;
 
 
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle = map_Float(DA_angle, -2.0, 2.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle = map_Float(GA_angle, -2.0, 2.0, 0.0, 180.0);
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle = map_Float(DR_angle, -2.0, 2.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle = map_Float(GR_angle, -2.0, 2.0, 0.0, 180.0);
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  map_Float(H_angle, -2.0, 2.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  map_Float(S_angle, -2.0, 2.0, 0.0, 180.0);
+
+ 
+
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle * DA_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle * GA_angle, -1.0, 1.0, 0.0, 180.0);
+
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle * DR_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle * GR_angle, -1.0, 1.0, 0.0, 180.0);
+
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * H_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * S_angle, -1.0, 1.0, 0.0, 180.0);
 
 }
 
