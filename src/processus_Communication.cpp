@@ -4,7 +4,7 @@
 #include "interface_SPI_Slave.h"
 #include "interface_GPIO.h"
 #include "serviceBaseDeTemps.h"
-//#include "BFIO"
+#include "service_Protocole_SPI.h"
 #include <stdio.h>
 #include "Processus_Communication.h"
 
@@ -16,6 +16,8 @@ void processus_Communication_Set_New_Com();
 
 int compt = 0;
 
+PROCESSUS_COMMUNICATION processus_Communication_Struct_WANTED_Value;
+PROCESSUS_COMMUNICATION processus_Communication_Struct_ACTUAL_Value;
 
 
 int Processus_Communication_initialise(void)
@@ -48,21 +50,23 @@ void processus_Communication_Lire()
     // }
     // Serial.println("");
 
-    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'R')
-    {
-        interface_NEOPIXEL_allume(255, 0, 0);
-        interface_GPIO_Struct.Lumiere_D = 1;
-    }
-    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'G')
-    {
-        interface_NEOPIXEL_allume(0, 255, 0);
-        interface_GPIO_Struct.Lumiere_D = 0;
-    }
-    if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'B')
-    {
-        interface_NEOPIXEL_allume(0, 0, 255);
-        interface_GPIO_Struct.Lumiere_D = 0;
-    }
+    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'R')
+    // {
+    //     interface_NEOPIXEL_allume(255, 0, 0);
+    //     interface_GPIO_Struct.Lumiere_D = 1;
+    // }
+    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'G')
+    // {
+    //     interface_NEOPIXEL_allume(0, 255, 0);
+    //     interface_GPIO_Struct.Lumiere_D = 0;
+    // }
+    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'B')
+    // {
+    //     interface_NEOPIXEL_allume(0, 0, 255);
+    //     interface_GPIO_Struct.Lumiere_D = 0;
+    // }
+
+    service_Protocole_SPI_Received(interface_SPI_Struct.spi_slave_rx_buf, &interface_SPI_Struct.spi_message_size);
 
     interface_SPI_Struct.etatDuModule = 0;
 
@@ -73,18 +77,8 @@ void processus_Communication_Lire()
 
 void processus_Communication_Set_New_Com()
 {
-    for(int i = 0; i < SPI_BUFFER_SIZE; i++)
-    {
-        if(interface_GPIO_Struct.Lumiere_D == 0)
-        {
-            interface_SPI_Struct.spi_slave_tx_buf[i] = '0';
-        }
-        if(interface_GPIO_Struct.Lumiere_D == 1)
-        {
-            interface_SPI_Struct.spi_slave_tx_buf[i] = '1';
-        }
-        
-    }
+    
+    service_Protocole_SPI_Pepare_Trame_Slave(interface_SPI_Struct.spi_slave_tx_buf, &interface_SPI_Struct.spi_message_size);
     interface_SPI_Struct.trameReady = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
 }
