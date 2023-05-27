@@ -33,7 +33,7 @@ int processus_Calcule_Accelerometre_initialise()
     processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)-1.0;
     processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)-1.0;
     processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)-1.0;
 
 
     processus_Calcule_Accelerometre_Offset();

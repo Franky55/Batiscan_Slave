@@ -48,6 +48,7 @@ void processus_Urgence_Lecture_Capteur()
     interface_PRESSION_Read(&val);
     interface_TEMPERATURE_Read(&val);
     interface_CAPTEUREAU_Read(&val2);
+    interface_NIVEAUBATTERIE_Read(&val);
 
     // Serial.print("EAU: ");
     // Serial.print(val2);

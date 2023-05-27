@@ -41,41 +41,4 @@ void Processus_Controle_Adjuste_Servo()
 
 
 
-void MoveServo()
-{
-  compteurPWM++;
-
-  
-
-  compteurPWM =0;
-
-  if(Sense11 == true)
-    {
-      cycle = cycle + 1;
-      if(cycle >= 180)
-      {
-        Sense11 = false;
-      }
-    }
-    else
-    {
-      cycle = cycle - 1;
-      if(cycle <= 0)
-      {
-        Sense11 = true;
-      }
-    }
-
-
-    interface_PWM_Struct.SERVO_DA_angle = cycle;
-    interface_PWM_Struct.SERVO_DR_angle = cycle;
-    interface_PWM_Struct.SERVO_GA_angle = cycle;
-    interface_PWM_Struct.SERVO_GR_angle = cycle;
-    interface_PWM_Struct.SERVO_H_angle = cycle;
-    interface_PWM_Struct.SERVO_S_angle = cycle;
-    interface_PWM_Struct.SERVO_X_angle = cycle;
-}
-
-
-
 

@@ -19,7 +19,13 @@ int compt = 0;
 PROCESSUS_COMMUNICATION processus_Communication_Struct_WANTED_Value;
 PROCESSUS_COMMUNICATION processus_Communication_Struct_ACTUAL_Value;
 
-
+/**
+ * @brief La fonction initialise le processus de la communication
+ * Met la LED bleu
+ * -> processus_Communication_Set_New_Com
+ * 
+ * @return int 
+ */
 int Processus_Communication_initialise(void)
 {
 
@@ -29,6 +35,12 @@ int Processus_Communication_initialise(void)
     return 0;
 }
 
+/**
+ * @brief Cette fonction check interface_SPI_Struct.etatDuModule
+ * une fois que c'est egale a 1, il devrait avoir du data de disponnible
+ * -> processus_Communication_Lire
+ * 
+ */
 void processus_Communication_Att_Lire()
 {
     if(interface_SPI_Struct.etatDuModule != 1)
@@ -40,31 +52,16 @@ void processus_Communication_Att_Lire()
 
 }
 
-
+/**
+ * @brief Cette fonction permet de lire le data
+ * J'appelle la fonction service_Protocole_SPI_Received:
+ * Cette fonction update les valeurs si tous les parametres font du sense
+ * interface_SPI_Struct.etatDuModule = 0
+ * -> processus_Communication_Set_New_Com
+ * 
+ */
 void processus_Communication_Lire()
 {
-    // Serial.print("Data Received: ");
-    // for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
-    // {
-    //     Serial.print((char)interface_SPI_Struct.spi_slave_rx_buf[i]);
-    // }
-    // Serial.println("");
-
-    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'R')
-    // {
-    //     interface_NEOPIXEL_allume(255, 0, 0);
-    //     interface_GPIO_Struct.Lumiere_D = 1;
-    // }
-    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'G')
-    // {
-    //     interface_NEOPIXEL_allume(0, 255, 0);
-    //     interface_GPIO_Struct.Lumiere_D = 0;
-    // }
-    // if(interface_SPI_Struct.spi_slave_rx_buf[3] == 'B')
-    // {
-    //     interface_NEOPIXEL_allume(0, 0, 255);
-    //     interface_GPIO_Struct.Lumiere_D = 0;
-    // }
 
     service_Protocole_SPI_Received(interface_SPI_Struct.spi_slave_rx_buf, &interface_SPI_Struct.spi_message_size);
 
@@ -74,11 +71,17 @@ void processus_Communication_Lire()
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Set_New_Com;
 }
 
-
+/**
+ * @brief Prepare une trame de communication
+ * Utilise la fonction: service_Protocole_SPI_Pepare_Trame_Slave_To_Master
+ * interface_SPI_Struct.trameReady = 1
+ * -> processus_Communication_Att_Lire
+ * 
+ */
 void processus_Communication_Set_New_Com()
 {
     
-    service_Protocole_SPI_Pepare_Trame_Slave(interface_SPI_Struct.spi_slave_tx_buf, &interface_SPI_Struct.spi_message_size);
+    service_Protocole_SPI_Pepare_Trame_Slave_To_Master(interface_SPI_Struct.spi_slave_tx_buf, &interface_SPI_Struct.spi_message_size);
     interface_SPI_Struct.trameReady = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Att_Lire;
 }
