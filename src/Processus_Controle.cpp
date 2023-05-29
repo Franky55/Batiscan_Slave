@@ -47,6 +47,13 @@ void Processus_Controle_Adjuste_Servo()
   interface_GPIO_Struct.Control_Cam = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Camera_State;
   interface_GPIO_Struct.Lumiere_D = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Right_Light_State;
   interface_GPIO_Struct.Lumiere_G = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Left_Light_State;
+
+
+  //update Wanted
+  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Left_Light_State = interface_GPIO_Struct.Lumiere_G;
+  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Right_Light_State = interface_GPIO_Struct.Lumiere_D;
+
+
 }
 
 

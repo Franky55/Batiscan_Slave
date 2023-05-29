@@ -11,6 +11,9 @@
 #include "Processus_Communication.h"
 
 
+#define MAX_FLOAT_ACC 10.0
+#define MIN_FLOAT_ACC -10.0
+
 //http://www.geekmomprojects.com/gyroscopes-and-accelerometers-on-a-chip/
 
 void processus_Calcule_Accelerometre_Offset();
@@ -38,12 +41,12 @@ int compteur_UpdateVal = 0;
 
 int processus_Calcule_Accelerometre_initialise()
 {
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)-1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)-1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)1.0;
 
 
     processus_Calcule_Accelerometre_Offset();
@@ -102,12 +105,12 @@ void processus_Calcule_Accelerometre_GetPosition()
 
 
     //Permet de rotationner
-    gyroX = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll/1000.0 * elapsedTime); // deg/s * s = deg
-    gyroY = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch/1000.0 * elapsedTime);
+    gyroX = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch/1000.0 * elapsedTime); // deg/s * s = deg
+    gyroY = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll/1000.0 * elapsedTime);
     processus_Calcule_Accelerometre_Struct.Yaw =  processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z + 0.008106) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Yaw/1000.0 * elapsedTime);
     // Complementary filter - combine acceleromter and gyro angle values
-    processus_Calcule_Accelerometre_Struct.Roll = 0.96 * gyroX + 0.04 * a.acceleration.x;
-    processus_Calcule_Accelerometre_Struct.Pitch =  0.96 * gyroY + 0.04 * a.acceleration.y;
+    processus_Calcule_Accelerometre_Struct.Pitch = 0.96 * gyroX + 0.04 * a.acceleration.x;
+    processus_Calcule_Accelerometre_Struct.Roll =  0.96 * gyroY + 0.04 * a.acceleration.y;
     
 
     // Serial.print(processus_Calcule_Accelerometre_Struct.Roll);
@@ -131,16 +134,16 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     compteur_UpdateVal++;
     if(compteur_UpdateVal > 100)
     {
-        processus_Communication_Struct_ACTUAL_Value.Pitch = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Pitch, -1.0, 1.0, 0.0, 180.0);
-        processus_Communication_Struct_ACTUAL_Value.Roll = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Roll, -1.0, 1.0, 0.0, 180.0);
-        processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Yaw, -1.0, 1.0, 0.0, 180.0);
+        processus_Communication_Struct_ACTUAL_Value.Pitch = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Pitch, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+        processus_Communication_Struct_ACTUAL_Value.Roll = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Roll, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+        processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Yaw, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
         compteur_UpdateVal = 0;
     }
 
     float DA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
-    float GA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
+    float GA_angle = processus_Calcule_Accelerometre_Struct.Pitch + processus_Calcule_Accelerometre_Struct.Roll;
 
-    float DR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
+    float DR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) - processus_Calcule_Accelerometre_Struct.Roll;
     float GR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
 
     float H_angle = processus_Calcule_Accelerometre_Struct.Yaw + processus_Calcule_Accelerometre_Struct.Roll;
@@ -153,14 +156,14 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
 
  
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle * DA_angle, -1.0, 1.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle * GA_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle * DA_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle * GA_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle * DR_angle, -1.0, 1.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle * GR_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle * DR_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle * GR_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * H_angle, -1.0, 1.0, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * S_angle, -1.0, 1.0, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * H_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * S_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
 }
 
@@ -173,63 +176,63 @@ float *H_angle,
 float *S_angle)
 {
     ////////////////////////// DA_angle
-    if(*DA_angle > 1.0)
+    if(*DA_angle > MAX_FLOAT_ACC)
     {
-        *DA_angle = 1.0;
+        *DA_angle = MAX_FLOAT_ACC;
     }
-    if(*DA_angle < -1.0)
+    if(*DA_angle < MIN_FLOAT_ACC)
     {
-        *DA_angle = -1.0;
+        *DA_angle = MIN_FLOAT_ACC;
     }
 
     ////////////////////////// GA_angle
-    if(*GA_angle > 1.0)
+    if(*GA_angle > MAX_FLOAT_ACC)
     {
-        *GA_angle = 1.0;
+        *GA_angle = MAX_FLOAT_ACC;
     }
-    if(*GA_angle < -1.0)
+    if(*GA_angle < MIN_FLOAT_ACC)
     {
-        *GA_angle = -1.0;
+        *GA_angle = MIN_FLOAT_ACC;
     } 
 
     ////////////////////////// DR_angle
-    if(*DR_angle > 1.0)
+    if(*DR_angle > MAX_FLOAT_ACC)
     {
-        *DR_angle = 1.0;
+        *DR_angle = MAX_FLOAT_ACC;
     }
-    if(*DR_angle < -1.0)
+    if(*DR_angle < MIN_FLOAT_ACC)
     {
-        *DR_angle = -1.0;
+        *DR_angle = MIN_FLOAT_ACC;
     } 
 
     ////////////////////////// GR_angle
-    if(*GR_angle > 1.0)
+    if(*GR_angle > MAX_FLOAT_ACC)
     {
-        *GR_angle = 1.0;
+        *GR_angle = MAX_FLOAT_ACC;
     }
-    if(*GR_angle < -1.0)
+    if(*GR_angle < MIN_FLOAT_ACC)
     {
-        *GR_angle = -1.0;
+        *GR_angle = MIN_FLOAT_ACC;
     } 
 
     ////////////////////////// H_angle
-    if(*H_angle > 1.0)
+    if(*H_angle > MAX_FLOAT_ACC)
     {
-        *H_angle = 1.0;
+        *H_angle = MAX_FLOAT_ACC;
     }
-    if(*H_angle < -1.0)
+    if(*H_angle < MIN_FLOAT_ACC)
     {
-        *H_angle = -1.0;
+        *H_angle = MIN_FLOAT_ACC;
     }  
 
     ////////////////////////// S_angle
-    if(*S_angle > 1.0)
+    if(*S_angle > MAX_FLOAT_ACC)
     {
-        *S_angle = 1.0;
+        *S_angle = MAX_FLOAT_ACC;
     }
-    if(*S_angle < -1.0)
+    if(*S_angle < MIN_FLOAT_ACC)
     {
-        *S_angle = -1.0;
+        *S_angle = MIN_FLOAT_ACC;
     }  
 }
 

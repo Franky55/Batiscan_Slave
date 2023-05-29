@@ -60,8 +60,8 @@ void processus_Urgence_Lecture_Capteur()
     processus_Communication_Struct_ACTUAL_Value.Battery = interface_Niveau_Batterie_Struct.batterie;
     
     
-    // Serial.print("EAU: ");
-    // Serial.print(val2);
+    // Serial.print("Bat: ");
+    // Serial.print(val);
     // Serial.print("\n");
     
 }

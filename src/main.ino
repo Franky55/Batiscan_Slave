@@ -36,6 +36,7 @@
 // Include des Services
 #include "serviceTaskServer.h"
 #include "serviceBaseDeTemps.h"
+#include "service_Protocole_SPI.h"
 
 // Inlude des interfaces
 #include "interfaceEntree1.h"

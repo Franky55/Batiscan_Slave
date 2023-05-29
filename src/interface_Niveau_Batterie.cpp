@@ -41,7 +41,7 @@ int interface_NIVEAUBATTERIE_Read(int *valeur)
     //Il faut dire le ratio pour le pourcentage
 
 
-    interface_Niveau_Batterie_Struct.tab_Moyenne_batterie_Pourcentage[GROSSEUR_TAB_MOYENNE - 1] = 100 * val / MAX_VALUE_BAT;
+    interface_Niveau_Batterie_Struct.tab_Moyenne_batterie_Pourcentage[GROSSEUR_TAB_MOYENNE - 1] = 100 * (val-2290) / (MAX_VALUE_BAT-2290);
 
 
     int moyenne = 0;

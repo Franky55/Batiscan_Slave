@@ -113,6 +113,17 @@ void interface_SPI_Queue_Transaction()
     {
         return;
     }
+
+    // Serial.print("SPI slave sending:\n");
+
+    // for(int i = 0; i < interface_SPI_Struct.spi_message_size; i++)
+    // {
+    //     Serial.print(interface_SPI_Struct.spi_slave_tx_buf[i]);
+    //     Serial.print(", ");
+    // }
+    // Serial.println("\n");
+
+
     
     slave.end();
     slave.setDataMode(SPI_MODE0);
