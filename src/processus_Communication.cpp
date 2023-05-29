@@ -14,7 +14,7 @@ void processus_Communication_Att_Lire();
 void processus_Communication_Lire();
 void processus_Communication_Set_New_Com();
 
-int compt = 0;
+int compt_Since_Last_Trame = 0;
 
 PROCESSUS_COMMUNICATION processus_Communication_Struct_WANTED_Value;
 PROCESSUS_COMMUNICATION processus_Communication_Struct_ACTUAL_Value;
@@ -28,6 +28,14 @@ PROCESSUS_COMMUNICATION processus_Communication_Struct_ACTUAL_Value;
  */
 int Processus_Communication_initialise(void)
 {
+    processus_Communication_Struct_WANTED_Value.Is_Communicating = 1;
+    processus_Communication_Struct_WANTED_Value.Pitch = 0;
+    processus_Communication_Struct_WANTED_Value.Roll = 0;
+    processus_Communication_Struct_WANTED_Value.Yaw = 0;
+
+    processus_Communication_Struct_WANTED_Value.union_Bool.All = 0;
+
+
 
     interface_NEOPIXEL_allume(0, 0, 100);
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Set_New_Com;
@@ -43,11 +51,17 @@ int Processus_Communication_initialise(void)
  */
 void processus_Communication_Att_Lire()
 {
+    compt_Since_Last_Trame++;
     if(interface_SPI_Struct.etatDuModule != 1)
     {
+        if(compt_Since_Last_Trame > 100)
+        {
+            processus_Communication_Struct_WANTED_Value.Is_Communicating = 0;
+        }
         return;
     }
-
+    compt_Since_Last_Trame = 0;
+    processus_Communication_Struct_WANTED_Value.Is_Communicating = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Lire;
 
 }

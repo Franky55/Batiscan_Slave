@@ -12,8 +12,9 @@ typedef struct
 {
     unsigned char niveau_Urgence;
     unsigned char unite;
-    int tab_Moyenne_batterie[GROSSEUR_TAB_MOYENNE];
+    unsigned char tab_Moyenne_batterie_Pourcentage[GROSSEUR_TAB_MOYENNE];
     int batterie;
+    
 }INTERFACE_Niveau_Batterie;
 
 

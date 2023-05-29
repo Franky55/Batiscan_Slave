@@ -13,6 +13,7 @@ typedef struct
     unsigned char Urgence_Temperature;
     unsigned char Urgence_Pression;
     unsigned char Urgence_DectectionEau;
+    unsigned char Urgence_Batterie;
 }PROCESSUS_Urgence;
 
 

@@ -11,6 +11,8 @@ INTERFACE_Niveau_eau interface_Niveau_eau;
 
 int interface_CAPTEUREAU_Initialise()
 {
+    interface_Niveau_eau.eau = 1;
+    interface_Niveau_eau.niveau_Urgence = NIVEAU_URGENCE_0;
     return 0;
 }
 
@@ -20,8 +22,8 @@ int interface_CAPTEUREAU_Read(bool *valeur)
     
     interface_GPIO_Read(EAU, valeur);    
 
-    interface_CapteurEau_Verification_eau(valeur);
-    interface_Niveau_eau.eau = valeur;
+    interface_CapteurEau_Verification_eau(*valeur);
+    interface_Niveau_eau.eau = *valeur;
 
     return 0;
 }

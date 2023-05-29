@@ -3,6 +3,7 @@
 #include "serviceBaseDeTemps.h"
 #include "interface_GPIO.h"
 #include "interface_PWM.h"
+#include "Processus_Communication.h"
 #include "Processus_Ballast.h"
 
 
@@ -47,6 +48,14 @@ int processus_Ballast_initialise(void)
  */
 void processus_Ballast_Wait_State()
 {
+    if(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing == 1)
+    {
+        processus_Ballast_EMPTY_OUT();
+        return;
+    }
+
+
+    processus_Ballast_Struct.state = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State;
     switch (processus_Ballast_Struct.state)
     {
         case STATE_BALLAST_WAIT:
@@ -92,6 +101,7 @@ void processus_Ballast_FILL_UP()
     processus_Ballast_Struct.timer_Control_Ballast++;                                           //augmente le timer
 
     interface_GPIO_Write(VALVE, OPEN_VALVE);
+    serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
 }
 
 
@@ -124,4 +134,5 @@ void processus_Ballast_EMPTY_OUT()
 
     interface_GPIO_Write(VALVE, OPEN_VALVE);
     interface_Analogue_Write(DRIVE_BALLAST, 255);
+    serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
 }

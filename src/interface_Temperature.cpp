@@ -14,6 +14,10 @@ void interface_TEMPERATURE_Verification_TEMPERATURE(int valeur);
 int interface_TEMPERATURE_Initialise()
 {
     interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
+    for(int i = 0; i < GROSSEUR_TAB_MOYENNE; i++)
+    {
+        interface_Temperature_Struct.tab_Moyenne_Temperature[i] = 25;
+    }
     return 0;
 }
 
@@ -23,7 +27,7 @@ int interface_TEMPERATURE_Initialise()
  * @param valeur 
  * @return int 
  */
-int interface_TEMPERATURE_Read(int *valeur)
+int interface_TEMPERATURE_Read(unsigned char *valeur)
 {
     int val = pilote_ADC_AnalogRead(TEMPERATURE);
 
@@ -47,25 +51,10 @@ int interface_TEMPERATURE_Read(int *valeur)
 
     moyenne = (moyenne - 2100 + OFFSET)/-10.76;
 
-    *valeur = (int)moyenne;
-    interface_Temperature_Struct.temperature = (int)moyenne;
+    *valeur = (unsigned char)moyenne;
+    interface_Temperature_Struct.temperature = (unsigned char)moyenne;
 
     interface_TEMPERATURE_Verification_TEMPERATURE((int)moyenne);
-
-    switch(interface_Temperature_Struct.unite)
-    {
-        case 0:
-
-        // interface_Pression_Struct = 
-        // *valeur = 
-        break;
-
-        case 1:
-        break;
-
-        case 2:
-        break;
-    }
 
 
     return moyenne;

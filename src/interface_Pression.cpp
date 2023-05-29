@@ -15,6 +15,11 @@ INTERFACE_Pression interface_Pression_Struct;
 
 int interface_PRESSION_Initialise()
 {
+    interface_Pression_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
+    for(int i = 0; i < GROSSEUR_TAB_MOYENNE; i++)
+    {
+        interface_Pression_Struct.tab_Moyenne_Pression[i] = 0;
+    }
     return 0;
 }
 

@@ -8,6 +8,10 @@ typedef struct
     float Pitch;
     float Roll;
 
+    float Orientation_Yaw;
+    float Orientation_Pitch;
+    float Orientation_Roll;
+
     unsigned char Wanted_SERVO_GA_angle;
     unsigned char Wanted_SERVO_GR_angle;
     unsigned char Wanted_SERVO_DA_angle;

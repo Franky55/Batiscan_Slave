@@ -7,9 +7,11 @@
 #include "Interface_Accelerometre.h"
 #include "serviceBaseDeTemps.h"
 #include "interface_PWM.h"
+#include "interface_GPIO.h"
 
 #include <stdio.h>
 #include "Processus_Controle.h"
+#include "Processus_Communication.h"
 #include "processus_Calcule_Accelerometre.h"
 
 unsigned long compteur = 0;
@@ -37,6 +39,14 @@ void Processus_Controle_Adjuste_Servo()
   interface_PWM_Struct.SERVO_DR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle;
   interface_PWM_Struct.SERVO_H_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle;
   interface_PWM_Struct.SERVO_S_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle;
+
+  interface_PWM_Struct.SERVO_X_angle = (unsigned char)processus_Communication_Struct_WANTED_Value.Camera_Servo_Angle;
+
+  interface_PWM_Struct.Drive_value = (unsigned char)processus_Communication_Struct_WANTED_Value.Speed;
+
+  interface_GPIO_Struct.Control_Cam = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Camera_State;
+  interface_GPIO_Struct.Lumiere_D = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Right_Light_State;
+  interface_GPIO_Struct.Lumiere_G = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Left_Light_State;
 }
 
 

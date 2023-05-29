@@ -95,9 +95,9 @@
 /***  DÉFINITION POUR LE NIVEAU DE LA BATTERIE ***/
 #define POWER_BAT 4
 
-#define POWER_BAT_MIN 13
-#define POWER_BAT_MOY 14.5
-#define POWER_BAT_MAX 17
+#define POWER_BAT_MIN 20
+#define POWER_BAT_MOY 50
+#define POWER_BAT_MAX 90
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@
  * @brief Le temps est utilise par un compteur qui se fait avec la base de temps
  * 
  */
-#define PROCESSUS_BALLAST_FULL_EN_MS 5000
+#define PROCESSUS_BALLAST_FULL_EN_MS 2500
 #define PROCESSUS_BALLAST_EMPTY_EN_MS 0
 
 
