@@ -157,7 +157,7 @@
  * My circuit goes: Nuh huh
  * 
  */
-#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 100
+#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 0
 
 
 
@@ -184,7 +184,7 @@
 #define SPI_MISO 13
 #define SPI_MOSI 11
 #define SPI_CLK 12
-#define INTERFACE_SPI_CS1 10
+#define INTERFACE_SPI_CS1 2
 #define INTERFACE_SPI_CS2 14
 
 #define SPI_BUFFER_SIZE 255

@@ -48,7 +48,11 @@ void processus_Urgence_Lecture_Capteur()
     unsigned char ucVal = 0;
     bool val2;
     interface_PRESSION_Read(&val);
+    processus_Communication_Struct_ACTUAL_Value.Pressure = interface_Pression_Struct.pression;
 
+    // Serial.print("Pression: ");
+    // Serial.print(val);
+    // Serial.print("\n");
 
     interface_TEMPERATURE_Read(&ucVal);
     processus_Communication_Struct_ACTUAL_Value.Temperature = (signed char)interface_Temperature_Struct.temperature;
@@ -60,9 +64,7 @@ void processus_Urgence_Lecture_Capteur()
     processus_Communication_Struct_ACTUAL_Value.Battery = interface_Niveau_Batterie_Struct.batterie;
     
     
-    // Serial.print("Bat: ");
-    // Serial.print(val);
-    // Serial.print("\n");
+    
     
 }
 

@@ -3,6 +3,7 @@
 #include "Pilote_ADC.h"
 #include "interface_Pression.h"
 
+#define PRESSION_OFFSET 50
 
 void interface_PRESSION_Verification_Pression(int valeur);
 
@@ -18,7 +19,7 @@ int interface_PRESSION_Initialise()
     interface_Pression_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
     for(int i = 0; i < GROSSEUR_TAB_MOYENNE; i++)
     {
-        interface_Pression_Struct.tab_Moyenne_Pression[i] = 0;
+        interface_Pression_Struct.tab_Moyenne_Pression[i] = 331;
     }
     return 0;
 }
@@ -38,8 +39,8 @@ int interface_PRESSION_Read(int *valeur)
     {
         interface_Pression_Struct.tab_Moyenne_Pression[i] = interface_Pression_Struct.tab_Moyenne_Pression[i + 1];
     }
-
-    interface_Pression_Struct.tab_Moyenne_Pression[GROSSEUR_TAB_MOYENNE - 1] = val;
+    //pascal e2
+    interface_Pression_Struct.tab_Moyenne_Pression[GROSSEUR_TAB_MOYENNE - 1] = 8000 * (val + PRESSION_OFFSET) / 2993;
 
 
     int moyenne = 0;
@@ -57,21 +58,6 @@ int interface_PRESSION_Read(int *valeur)
     interface_Pression_Struct.pression = moyenne;
 
     interface_PRESSION_Verification_Pression(moyenne);
-
-    switch(interface_Pression_Struct.unite)
-    {
-        case 0:
-
-        // interface_Pression_Struct = 
-        // *valeur = 
-        break;
-
-        case 1:
-        break;
-
-        case 2:
-        break;
-    }
 
     return moyenne;
 }
