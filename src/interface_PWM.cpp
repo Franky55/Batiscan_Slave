@@ -10,10 +10,15 @@
   INTERFACE_PWM_TEMPS_UPDATE_EN_MS * SERVICEBASEDETEMPS_FREQUENCE_EN_HZ \
   /1000.0)
 
+#define INTERFACE_PWM_MOTEUR_TEMPS_UPDATE (\
+  INTERFACE_PWM_MOTEUR_TEMPS_UPDATE_EN_MS * SERVICEBASEDETEMPS_FREQUENCE_EN_HZ \
+  /1000.0)
+
 
 INTERFACE_PWM interface_PWM_Struct;
 
 int interface_PWM_compteur = 0;
+int interface_PWM_Moteur_compteur = 0;
 
 void interface_PWM_Update_Avant();
 void interface_PWM_Update_Arriere();
@@ -24,25 +29,35 @@ void interface_PWM_Update_Moteur();
 
 int interface_PWM_Initialise()
 {
-    serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Moteur;
+    interface_PWM_Struct.Drive_value = 92;
+    interface_PWM_Struct.Drive_Value_SlowChange = 92;
+    serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Avant;
+    serviceBaseDeTemps_execute[INTERFACE_UPDATE_MOTEUR] = interface_PWM_Update_Moteur;
     
     return 0;
 }
 
 void interface_PWM_Update_Moteur()
 {
-    interface_PWM_compteur++;
-    if (interface_PWM_compteur < INTERFACE_PWM_TEMPS_UPDATE)
+    interface_PWM_Moteur_compteur++;
+    if (interface_PWM_Moteur_compteur > INTERFACE_PWM_MOTEUR_TEMPS_UPDATE)
     {
-        return;
+        if(interface_PWM_Struct.Drive_value > interface_PWM_Struct.Drive_Value_SlowChange)
+        {
+            interface_PWM_Struct.Drive_Value_SlowChange++;
+        }
+        if(interface_PWM_Struct.Drive_value < interface_PWM_Struct.Drive_Value_SlowChange)
+        {
+            interface_PWM_Struct.Drive_Value_SlowChange--;
+        }
+        interface_PWM_Moteur_compteur = 0;
+        
     }
-    interface_PWM_compteur = 0;
- 
 
-    write_PWM(DRIVE_MOTEUR, interface_PWM_Struct.Drive_value);
-    analogWrite(DRIVE_BALLAST, interface_PWM_Struct.Ballast_value);
+    write_PWM(DRIVE_MOTEUR, interface_PWM_Struct.Drive_Value_SlowChange);
+    //analogWrite(DRIVE_BALLAST, interface_PWM_Struct.Ballast_value);
 
-    serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Avant;
+    
 }
 
 
@@ -113,7 +128,7 @@ void interface_PWM_Update_Ya()
     write_PWM(SERVO_H,  interface_PWM_Struct.SERVO_H_angle);
     write_PWM(SERVO_S,  interface_PWM_Struct.SERVO_S_angle);
 
-    serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Moteur;
+    serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Avant;
 }
 
 
@@ -191,5 +206,5 @@ void interface_Analogue_Write(int servoPin, int value)
     break;
     }
 
-    analogWrite(servoPin, value);
+    //analogWrite(servoPin, value);
 }

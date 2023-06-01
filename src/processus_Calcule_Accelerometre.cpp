@@ -165,6 +165,20 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * H_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
     processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * S_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
+
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle);
+    // Serial.print("/");
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle);//pas bon
+    // Serial.print("/");
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle);
+    // Serial.print("/");
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle);
+    // Serial.print("/");
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle);
+    // Serial.print("/");
+    // Serial.println(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle);
+
+
 }
 
 

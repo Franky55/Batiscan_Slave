@@ -157,7 +157,9 @@
  * My circuit goes: Nuh huh
  * 
  */
-#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 0
+#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 100
+
+#define INTERFACE_PWM_MOTEUR_TEMPS_UPDATE_EN_MS 50
 
 
 
@@ -249,7 +251,7 @@
  * @brief Nombre de phase de la base de temps \ref xserviceBaseDeTemps.h
  * 
  */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 8
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 9
 
 
 /**
@@ -297,6 +299,11 @@
  */
 #define INTERFACE_UPDATE_GPIO 7
 
+/**
+ * @brief Phase pour update les servos moteurs
+ * 
+ */
+#define INTERFACE_UPDATE_MOTEUR 8
 
 
 

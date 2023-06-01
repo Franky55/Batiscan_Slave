@@ -26,6 +26,7 @@
 
 //Fonctions publiques:
 void processusClignotant_initialise(void);
+void processusClignotant_attendAvantDAllumerLeTemoinLumineux();
 
 //Variables publiques:
 //pas de variables publiques

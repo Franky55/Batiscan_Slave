@@ -42,7 +42,7 @@ void Processus_Controle_Adjuste_Servo()
 
   interface_PWM_Struct.SERVO_X_angle = (unsigned char)processus_Communication_Struct_WANTED_Value.Camera_Servo_Angle;
 
-  interface_PWM_Struct.Drive_value = (unsigned char)processus_Communication_Struct_WANTED_Value.Speed;
+  interface_PWM_Struct.Drive_value = (unsigned char)map((long)processus_Communication_Struct_WANTED_Value.Speed, -127, 127, 52, 132);
 
   interface_GPIO_Struct.Control_Cam = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Camera_State;
   interface_GPIO_Struct.Lumiere_D = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Right_Light_State;
@@ -53,6 +53,11 @@ void Processus_Controle_Adjuste_Servo()
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Left_Light_State = interface_GPIO_Struct.Lumiere_G;
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Right_Light_State = interface_GPIO_Struct.Lumiere_D;
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Camera_State = interface_GPIO_Struct.Control_Cam;
+
+  processus_Communication_Struct_ACTUAL_Value.Speed = (signed char)map((long)interface_PWM_Struct.Drive_value, 52, 132, -127, 127);
+
+  // Serial.print("Speed: ");
+  // Serial.println(interface_PWM_Struct.Drive_Value_SlowChange);
 
 }
 

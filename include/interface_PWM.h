@@ -15,6 +15,7 @@ typedef struct
     unsigned char SERVO_S_angle;
 
     unsigned char Drive_value;
+    unsigned char Drive_Value_SlowChange;
     unsigned char Ballast_value;
 }INTERFACE_PWM;
 

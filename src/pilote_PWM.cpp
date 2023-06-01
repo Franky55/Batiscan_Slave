@@ -30,7 +30,7 @@ int pilote_PWM_Initialise()
     digitalWrite(SERVO_H,  LOW);
     digitalWrite(SERVO_S,  LOW);
 
-    digitalWrite(DIRECTION_BALLAST,  LOW);
+    digitalWrite(DIRECTION_BALLAST,  HIGH);
 
     //digitalWrite(DRIVE_MOTEUR,  LOW);
 

@@ -30,14 +30,14 @@
 unsigned long processusClignotant_compteur;
 
 //Definitions de fonctions privees:
-void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void);
-void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void);
+
+void processusClignotant_attendAvantDEteindreLeTemoinLumineux();
 
 //Definitions de variables publiques:
 //pas de variables publiques
 
 //Definitions de fonctions publiques:
-void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
+void processusClignotant_attendAvantDAllumerLeTemoinLumineux()
 {
   processusClignotant_compteur++;
   
@@ -48,20 +48,21 @@ void processusClignotant_attendAvantDAllumerLeTemoinLumineux(void)
   // Test Code Go here
 
   
-  
+  interface_Analogue_Write(DRIVE_BALLAST, 255);
+  interface_GPIO_Write(VALVE, OPEN_VALVE);
 
 
   // END test Code 
   interface_NEOPIXEL_allume(10, 10, 10);
 
-  interface_PWM_Struct.Drive_value = 150;
+  //interface_PWM_Struct.Drive_value = 110;
   //digitalWrite(SPI_CS1, HIGH);
   //Serial.println("ALLUME");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDEteindreLeTemoinLumineux;
 }
 
-void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
+void processusClignotant_attendAvantDEteindreLeTemoinLumineux()
 { 
   processusClignotant_compteur++;
   if (processusClignotant_compteur < PROCESSUSCLIGNOTANT_COMPTE_POUR_ETEINDRE)
@@ -72,14 +73,15 @@ void processusClignotant_attendAvantDEteindreLeTemoinLumineux(void)
   
   // Test Code Go here
 
-
+  interface_Analogue_Write(DRIVE_BALLAST, 0);
+  interface_GPIO_Write(VALVE, CLOSE_VALVE);
 
   // END test Code 
 
 
   interface_NEOPIXEL_eteint();
 
-  interface_PWM_Struct.Drive_value = 92;
+  //interface_PWM_Struct.Drive_value = 92;
   //Serial.println("ETEINT");
   processusClignotant_compteur = 0;
   serviceBaseDeTemps_execute[PROCESSUSCLIGNOTANT_PHASE] = processusClignotant_attendAvantDAllumerLeTemoinLumineux;
