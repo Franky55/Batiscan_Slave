@@ -59,6 +59,18 @@ int pilote_PWM_Initialise()
 
 float write_PWM(int servoPin, int value)
 {
+    if(value > ANGLE_MAX)
+    {
+        return pwm.writeServo(servoPin, ANGLE_MAX);
+    }
+    if(value < ANGLE_MIN)
+    {
+        return pwm.writeServo(servoPin, ANGLE_MIN);
+    }
     return pwm.writeServo(servoPin, value);
 }
 
+float write_PWM_Moteur(int servoPin, int value)
+{
+    return pwm.writeServo(servoPin, value);
+}

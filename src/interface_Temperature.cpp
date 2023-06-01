@@ -7,6 +7,8 @@
 INTERFACE_Temperature interface_Temperature_Struct;
 
 #define OFFSET -408
+#define OFFSET_TEMPERATURE_DEGREE -3
+
 
 void interface_TEMPERATURE_Verification_TEMPERATURE(int valeur);
 
@@ -16,7 +18,7 @@ int interface_TEMPERATURE_Initialise()
     interface_Temperature_Struct.niveau_Urgence = NIVEAU_URGENCE_0;
     for(int i = 0; i < GROSSEUR_TAB_MOYENNE; i++)
     {
-        interface_Temperature_Struct.tab_Moyenne_Temperature[i] = 25;
+        interface_Temperature_Struct.tab_Moyenne_Temperature[i] = 22;
     }
     return 0;
 }
@@ -49,7 +51,7 @@ int interface_TEMPERATURE_Read(unsigned char *valeur)
 
     moyenne = moyenne / GROSSEUR_TAB_MOYENNE;
 
-    moyenne = (moyenne - 2100 + OFFSET)/-10.76;
+    moyenne = ((moyenne - 2100 + OFFSET)/-10.76) + OFFSET_TEMPERATURE_DEGREE;
 
     *valeur = (unsigned char)moyenne;
     interface_Temperature_Struct.temperature = (unsigned char)moyenne;

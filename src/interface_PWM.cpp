@@ -54,7 +54,7 @@ void interface_PWM_Update_Moteur()
         
     }
 
-    write_PWM(DRIVE_MOTEUR, interface_PWM_Struct.Drive_Value_SlowChange);
+    write_PWM_Moteur(DRIVE_MOTEUR, interface_PWM_Struct.Drive_Value_SlowChange);
     //analogWrite(DRIVE_BALLAST, interface_PWM_Struct.Ballast_value);
 
     
@@ -109,8 +109,8 @@ void interface_PWM_Update_Cam()
     }
     interface_PWM_compteur = 0;
 
-    write_PWM(SERVO_H,  interface_PWM_Struct.SERVO_H_angle);
-    write_PWM(SERVO_S,  interface_PWM_Struct.SERVO_S_angle);
+    write_PWM(SERVO_X,  interface_PWM_Struct.SERVO_X_angle);
+    //write_PWM(SERVO_S,  interface_PWM_Struct.SERVO_S_angle);
 
     serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Ya;
 }

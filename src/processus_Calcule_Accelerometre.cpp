@@ -105,9 +105,9 @@ void processus_Calcule_Accelerometre_GetPosition()
 
 
     //Permet de rotationner
-    gyroX = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch/1000.0 * elapsedTime); // deg/s * s = deg
-    gyroY = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll/1000.0 * elapsedTime);
-    processus_Calcule_Accelerometre_Struct.Yaw =  processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z + 0.008106) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Yaw/1000.0 * elapsedTime);
+    gyroX = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll * elapsedTime); // deg/s * s = deg
+    gyroY = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch * elapsedTime);
+    processus_Calcule_Accelerometre_Struct.Yaw =  (processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z + 0.008106) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Yaw/100.0 * elapsedTime));
     // Complementary filter - combine acceleromter and gyro angle values
     processus_Calcule_Accelerometre_Struct.Pitch = 0.96 * gyroX + 0.04 * a.acceleration.x;
     processus_Calcule_Accelerometre_Struct.Roll =  0.96 * gyroY + 0.04 * a.acceleration.y;
@@ -117,7 +117,15 @@ void processus_Calcule_Accelerometre_GetPosition()
     // Serial.print("/");
     // Serial.print(processus_Calcule_Accelerometre_Struct.Pitch);//pas bon
     // Serial.print("/");
-    // Serial.println(processus_Calcule_Accelerometre_Struct.Yaw);
+    // Serial.print(processus_Calcule_Accelerometre_Struct.Yaw);
+
+    // Serial.print("\t");
+    // Serial.print(processus_Communication_Struct_WANTED_Value.Pitch);
+    // Serial.print("/");
+    // Serial.print(processus_Communication_Struct_WANTED_Value.Roll);//pas bon
+    // Serial.print("/");
+    // Serial.println(processus_Communication_Struct_WANTED_Value.Yaw);
+
 
     // last_Pithc = processus_Calcule_Accelerometre_Struct.Pitch;
     // last_Roll = processus_Calcule_Accelerometre_Struct.Roll;

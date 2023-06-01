@@ -145,8 +145,8 @@
 #define SERVO_H 38
 #define SERVO_S 39
 
-#define ANGLE_MAX 45
-#define ANGLE_MIN -45
+#define ANGLE_MAX 135
+#define ANGLE_MIN 45
 #define ANGLE_CENTER 92
 
 /**

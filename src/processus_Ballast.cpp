@@ -118,7 +118,7 @@ void processus_Ballast_EMPTY_OUT()
 {
     if(processus_Ballast_Struct.state != STATE_BALLAST_EMPTY_OUT)
     {
-        Serial.println("Ballast != STATE_BALLAST_EMPTY_OUT");
+        // Serial.println("Ballast != STATE_BALLAST_EMPTY_OUT");
         digitalWrite(DRIVE_BALLAST, LOW);
         //interface_Analogue_Write(DRIVE_BALLAST, 0);
         interface_GPIO_Write(VALVE, CLOSE_VALVE);
@@ -129,7 +129,7 @@ void processus_Ballast_EMPTY_OUT()
 
     if(processus_Ballast_Struct.timer_Control_Ballast <= PROCESSUS_BALLAST_EMPTY)               //Check si timer est trop bas
     {
-        Serial.println("Ballast <= PROCESSUS_BALLAST_EMPTY");
+        // Serial.println("Ballast <= PROCESSUS_BALLAST_EMPTY");
         digitalWrite(DRIVE_BALLAST, LOW);
         //interface_Analogue_Write(DRIVE_BALLAST, 0);
         interface_GPIO_Write(VALVE, CLOSE_VALVE);
@@ -141,8 +141,9 @@ void processus_Ballast_EMPTY_OUT()
     }
     processus_Ballast_Struct.timer_Control_Ballast--;
     digitalWrite(DRIVE_BALLAST, HIGH);
-    Serial.print("Empty ballast: ");
-    Serial.println(interface_PWM_Struct.Ballast_value);
+    interface_GPIO_Write(VALVE, OPEN_VALVE);
+    // Serial.print("Empty ballast: ");
+    // Serial.println(interface_PWM_Struct.Ballast_value);
     serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
     return;
 }
