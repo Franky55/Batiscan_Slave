@@ -25,7 +25,7 @@ typedef struct
 {
     union Union_BOOL union_Bool;
 
-    unsigned char Camera_Servo_Angle;
+    signed char Camera_Servo_Angle;
 
     int Pressure;
     signed char Temperature;

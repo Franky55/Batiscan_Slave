@@ -45,8 +45,8 @@ int processus_Calcule_Accelerometre_initialise()
     processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)-1.0;
     processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)1.0;
     processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)-1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)-1.0;
 
 
     processus_Calcule_Accelerometre_Offset();
@@ -99,25 +99,25 @@ void processus_Calcule_Accelerometre_GetPosition()
     //Connaitre l'orientation
     processus_Calcule_Accelerometre_Struct.Orientation_Pitch = 0.96 * (processus_Calcule_Accelerometre_Struct.Orientation_Pitch + ((float)g.gyro.x  + 0.054113) * elapsedTime) + 0.04 * a.acceleration.x;
     processus_Calcule_Accelerometre_Struct.Orientation_Roll = 0.96 * (processus_Calcule_Accelerometre_Struct.Orientation_Roll + ((float)g.gyro.y  + 0.026281) * elapsedTime) + 0.04 * a.acceleration.y;
-    processus_Calcule_Accelerometre_Struct.Orientation_Yaw =  processus_Calcule_Accelerometre_Struct.Orientation_Yaw + ((float)g.gyro.z + 0.008106);
+    processus_Calcule_Accelerometre_Struct.Orientation_Yaw =  processus_Calcule_Accelerometre_Struct.Orientation_Yaw + (((float)g.gyro.z + 0.008106) * elapsedTime);
 
     
 
 
     //Permet de rotationner
-    gyroX = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll * elapsedTime); // deg/s * s = deg
-    gyroY = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch * elapsedTime);
-    processus_Calcule_Accelerometre_Struct.Yaw =  (processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z + 0.008106) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Yaw/100.0 * elapsedTime));
+    gyroX = processus_Calcule_Accelerometre_Struct.Pitch + ((float)g.gyro.x  + 0.054113     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Pitch * elapsedTime); // deg/s * s = deg
+    gyroY = processus_Calcule_Accelerometre_Struct.Roll + ((float)g.gyro.y  + 0.026281     ) * elapsedTime + ((float)processus_Communication_Struct_WANTED_Value.Roll * elapsedTime);
+    processus_Calcule_Accelerometre_Struct.Yaw =  (processus_Calcule_Accelerometre_Struct.Yaw + ((float)g.gyro.z + 0.008106) * elapsedTime);// - ((float)processus_Communication_Struct_WANTED_Value.Yaw/100.0 * elapsedTime));
     // Complementary filter - combine acceleromter and gyro angle values
     processus_Calcule_Accelerometre_Struct.Pitch = 0.96 * gyroX + 0.04 * a.acceleration.x;
     processus_Calcule_Accelerometre_Struct.Roll =  0.96 * gyroY + 0.04 * a.acceleration.y;
     
 
-    // Serial.print(processus_Calcule_Accelerometre_Struct.Roll);
-    // Serial.print("/");
-    // Serial.print(processus_Calcule_Accelerometre_Struct.Pitch);//pas bon
-    // Serial.print("/");
-    // Serial.print(processus_Calcule_Accelerometre_Struct.Yaw);
+    Serial.print(processus_Calcule_Accelerometre_Struct.Orientation_Pitch);
+    Serial.print("/");
+    Serial.print(processus_Calcule_Accelerometre_Struct.Orientation_Roll);//pas bon
+    Serial.print("/");
+    Serial.println(processus_Calcule_Accelerometre_Struct.Orientation_Yaw);
 
     // Serial.print("\t");
     // Serial.print(processus_Communication_Struct_WANTED_Value.Pitch);
@@ -154,9 +154,9 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     float DR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) - processus_Calcule_Accelerometre_Struct.Roll;
     float GR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
 
-    float H_angle = processus_Calcule_Accelerometre_Struct.Yaw + processus_Calcule_Accelerometre_Struct.Roll;
-    float S_angle = processus_Calcule_Accelerometre_Struct.Yaw - processus_Calcule_Accelerometre_Struct.Roll;
-
+    float H_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, -127, 127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
+    float S_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, -127, 127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
+    
 
     //je m'assure de ne pas depasser la val max ou min
     processus_Calcule_Accelerometre_Check_Under_Value_Cap(&DA_angle,&GA_angle,&DR_angle,&GR_angle,&H_angle, &S_angle);
@@ -170,8 +170,8 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle * DR_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
     processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle = (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle * GR_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * H_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
-    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * S_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle =  (unsigned char)map_Float(H_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+    processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle =  (unsigned char)map_Float(S_angle, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
 
 
     // Serial.print(processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle);
