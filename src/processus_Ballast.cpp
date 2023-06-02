@@ -50,15 +50,17 @@ int processus_Ballast_initialise(void)
  */
 void processus_Ballast_Wait_State()
 {
-    if(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing == 1)
+    processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Ballast_State = processus_Ballast_Struct.FULL;
+    processus_Ballast_Struct.state = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State;
+    if(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing == 1 || processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency)
     {
-        processus_Ballast_EMPTY_OUT();
+        processus_Ballast_Struct.state = STATE_BALLAST_EMPTY_OUT;
+        serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_EMPTY_OUT;
         return;
     }
     // Serial.print("BALLAST: ");
     // Serial.println(processus_Ballast_Struct.timer_Control_Ballast);
-    processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Ballast_State = processus_Ballast_Struct.FULL;
-    processus_Ballast_Struct.state = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State;
+    
     switch (processus_Ballast_Struct.state)
     {
         case STATE_BALLAST_WAIT:

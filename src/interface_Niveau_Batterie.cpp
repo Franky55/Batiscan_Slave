@@ -86,6 +86,6 @@ void interface_Niveau_Batterie_Verification_Batterie(int valeur)
     }
     else if(valeur < POWER_BAT_MOY)
     {
-        interface_Niveau_Batterie_Struct.niveau_Urgence = NIVEAU_URGENCE_MOYEN;
+        interface_Niveau_Batterie_Struct.niveau_Urgence = NIVEAU_URGENCE_HAUT;
     }
 }

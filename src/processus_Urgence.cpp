@@ -65,8 +65,39 @@ void processus_Urgence_Lecture_Capteur()
     interface_NIVEAUBATTERIE_Read(&val);
     processus_Communication_Struct_ACTUAL_Value.Battery = interface_Niveau_Batterie_Struct.batterie;
     
-    
-    
+}
+
+
+void Check_Emergencies()
+{
+    if(interface_Pression_Struct.niveau_Urgence == 4)
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+    }
+
+    if(interface_Temperature_Struct.niveau_Urgence == 4)
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+    }
+
+    if(interface_Niveau_eau.niveau_Urgence == 4)
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+    }
+
+    if(interface_Niveau_Batterie_Struct.niveau_Urgence == 4)
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+    }
+
+    if(interface_Niveau_Batterie_Struct.niveau_Urgence == 3)
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Low_Battery = 1;
+    }
     
 }
 

@@ -33,6 +33,8 @@ int Processus_Controle_initialise(void)
 
 void Processus_Controle_Adjuste_Servo()
 {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Servos
   interface_PWM_Struct.SERVO_GA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle;
   interface_PWM_Struct.SERVO_GR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle;
   interface_PWM_Struct.SERVO_DA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle;
@@ -42,14 +44,47 @@ void Processus_Controle_Adjuste_Servo()
 
   interface_PWM_Struct.SERVO_X_angle = (signed char)map((long)processus_Communication_Struct_WANTED_Value.Camera_Servo_Angle, 127, -127, 0, 180);
 
-  interface_PWM_Struct.Drive_value = (unsigned char)map((long)processus_Communication_Struct_WANTED_Value.Speed, 127, -127, 52, 132);
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Drive
+  if(processus_Communication_Struct_WANTED_Value.Is_Communicating == 0)
+  {
+    interface_PWM_Struct.Drive_value = 92;//arrete le moteur
+  }
+  else
+  {
+    interface_PWM_Struct.Drive_value = (unsigned char)map((long)processus_Communication_Struct_WANTED_Value.Speed, 127, -127, 52, 132);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Cammera
   interface_GPIO_Struct.Control_Cam = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Camera_State;
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Lumiere
   interface_GPIO_Struct.Lumiere_D = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Right_Light_State;
   interface_GPIO_Struct.Lumiere_G = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Left_Light_State;
 
 
-  //update Wanted
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Surfacing
+  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Surfacing = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing;
+
+
+  //In_Emergency
+  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency;
+
+  //Autre
+  //Dans leur processus
+
+
+
+
+
+
+
+  //update Actual
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Left_Light_State = interface_GPIO_Struct.Lumiere_G;
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Right_Light_State = interface_GPIO_Struct.Lumiere_D;
   processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Camera_State = interface_GPIO_Struct.Control_Cam;

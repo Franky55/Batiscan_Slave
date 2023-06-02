@@ -19,6 +19,7 @@
 void processus_Calcule_Accelerometre_Offset();
 void processus_Calcule_Accelerometre_GetPosition();
 void processus_Calcule_Accelerometre_Determine_Servo_Position();
+void processus_Calcule_Accelerometre_Calcule_Orientation();
 void processus_Calcule_Accelerometre_Check_Under_Value_Cap(float *DA_angle,
 float *GA_angle,
 float *DR_angle,
@@ -142,9 +143,7 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
     compteur_UpdateVal++;
     if(compteur_UpdateVal > 100)
     {
-        processus_Communication_Struct_ACTUAL_Value.Pitch = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Pitch, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
-        processus_Communication_Struct_ACTUAL_Value.Roll = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Roll, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
-        processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Yaw, MIN_FLOAT_ACC, MAX_FLOAT_ACC, 0.0, 180.0);
+        processus_Calcule_Accelerometre_Calcule_Orientation();
         compteur_UpdateVal = 0;
     }
 
@@ -188,6 +187,56 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
 
 
 }
+
+
+void processus_Calcule_Accelerometre_Calcule_Orientation()
+{
+    float _pitch = processus_Calcule_Accelerometre_Struct.Orientation_Pitch;
+    float _roll = 0;
+    float _yaw = 0;
+
+    //pitch
+    if(processus_Calcule_Accelerometre_Struct.Orientation_Pitch < 0)
+    {
+        _pitch = _pitch * -1;
+    }
+
+    while(_pitch > 3.14)
+    {
+        _pitch -= _pitch;
+    }
+
+    //roll
+    if(processus_Calcule_Accelerometre_Struct.Orientation_Roll < 0)
+    {
+        _roll = _roll * -1;
+    }
+
+    while(_roll > 3.14)
+    {
+        _roll -= _roll;
+    }
+
+    //yaw
+    if(processus_Calcule_Accelerometre_Struct.Orientation_Yaw < 0)
+    {
+        _yaw = _yaw * -1;
+    }
+
+    while(_yaw > 3.14)
+    {
+        _yaw -= _yaw;
+    }
+
+    
+
+    processus_Communication_Struct_ACTUAL_Value.Pitch = (signed char)map_Float(_pitch, 0, 3.14, -127, 127);
+    processus_Communication_Struct_ACTUAL_Value.Roll = (signed char)map_Float(_roll, 0, 3.14, -127, 127);
+    processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(_yaw, 0, 3.14, -127, 127);
+
+
+}
+
 
 
 void processus_Calcule_Accelerometre_Check_Under_Value_Cap(float *DA_angle,

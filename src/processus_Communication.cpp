@@ -54,10 +54,18 @@ void processus_Communication_Att_Lire()
     compt_Since_Last_Trame++;
     if(interface_SPI_Struct.etatDuModule != 1)
     {
-        if(compt_Since_Last_Trame > 100)
+        if(compt_Since_Last_Trame > 100)    // 100 ms
         {
             processus_Communication_Struct_WANTED_Value.Is_Communicating = 0;
+            interface_SPI_SLAVE_initialise();// cela va reset le master
         }
+        if(compt_Since_Last_Trame > 2000)   // 2000 ms
+        {
+            processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+            processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+            interface_SPI_SLAVE_initialise();// cela va reset le master
+        }
+
         return;
     }
     compt_Since_Last_Trame = 0;
