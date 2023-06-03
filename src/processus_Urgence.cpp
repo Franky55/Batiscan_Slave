@@ -6,6 +6,7 @@
 #include "interface_CapteurEau.h"
 #include "interface_Pression.h"
 #include "interface_Niveau_Batterie.h"
+#include "interface_NEOPIXEL.h"
 #include <stdio.h>
 #include "Processus_Communication.h"
 #include "processus_Urgence.h"
@@ -17,7 +18,7 @@
 
 
 void processus_Urgence_Lecture_Capteur();
-
+void Check_Emergencies();
 
 
 
@@ -64,6 +65,8 @@ void processus_Urgence_Lecture_Capteur()
 
     interface_NIVEAUBATTERIE_Read(&val);
     processus_Communication_Struct_ACTUAL_Value.Battery = interface_Niveau_Batterie_Struct.batterie;
+
+    serviceBaseDeTemps_execute[PROCESSUS_URGENCE_PHASE] = Check_Emergencies;
     
 }
 
@@ -72,33 +75,55 @@ void Check_Emergencies()
 {
     if(interface_Pression_Struct.niveau_Urgence == 4)
     {
+        Serial.println("PRESSION URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
         processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
     }
-
+    else
     if(interface_Temperature_Struct.niveau_Urgence == 4)
     {
+        Serial.println("TEMPERATURE URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
         processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
     }
-
+    else
     if(interface_Niveau_eau.niveau_Urgence == 4)
     {
+        Serial.println("WATER URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
         processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
     }
-
+    else
     if(interface_Niveau_Batterie_Struct.niveau_Urgence == 4)
     {
+        Serial.println("BATTERIE URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
         processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
     }
+    else
+    {
+        processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 0;
+        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 0;
+    }
+
 
     if(interface_Niveau_Batterie_Struct.niveau_Urgence == 3)
     {
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Low_Battery = 1;
     }
     
+
+    if(processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency == 1)
+    {
+        interface_NEOPIXEL_allume(50, 0, 0);
+    }
+    else
+    {
+        interface_NEOPIXEL_allume(0, 50, 0);
+    }
+
+
+    serviceBaseDeTemps_execute[PROCESSUS_URGENCE_PHASE] = processus_Urgence_Lecture_Capteur;
 }
 
 

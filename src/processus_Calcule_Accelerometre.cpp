@@ -14,12 +14,18 @@
 #define MAX_FLOAT_ACC 10.0
 #define MIN_FLOAT_ACC -10.0
 
+#define MIN_ORIENTATION -127
+#define MID_ORIENTATION 0
+#define MAX_ORIENTATION 127
+
 //http://www.geekmomprojects.com/gyroscopes-and-accelerometers-on-a-chip/
 
 void processus_Calcule_Accelerometre_Offset();
 void processus_Calcule_Accelerometre_GetPosition();
 void processus_Calcule_Accelerometre_Determine_Servo_Position();
-void processus_Calcule_Accelerometre_Calcule_Orientation();
+void processus_Calcule_Accelerometre_Calcule_Orientation(sensors_event_t a,
+    sensors_event_t g,
+    sensors_event_t temp);
 void processus_Calcule_Accelerometre_Check_Under_Value_Cap(float *DA_angle,
 float *GA_angle,
 float *DR_angle,
@@ -114,11 +120,25 @@ void processus_Calcule_Accelerometre_GetPosition()
     processus_Calcule_Accelerometre_Struct.Roll =  0.96 * gyroY + 0.04 * a.acceleration.y;
     
 
-    Serial.print(processus_Calcule_Accelerometre_Struct.Orientation_Pitch);
-    Serial.print("/");
-    Serial.print(processus_Calcule_Accelerometre_Struct.Orientation_Roll);//pas bon
-    Serial.print("/");
-    Serial.println(processus_Calcule_Accelerometre_Struct.Orientation_Yaw);
+
+    compteur_UpdateVal++;
+    if(compteur_UpdateVal > 100)
+    {
+        processus_Calcule_Accelerometre_Calcule_Orientation(a, g, temp);
+        compteur_UpdateVal = 0;
+    }
+
+    
+
+    
+
+    
+
+    // Serial.print(a.acceleration.x);
+    // Serial.print("/");
+    // Serial.print(a.acceleration.y);//pas bon
+    // Serial.print("/");
+    // Serial.println(a.acceleration.z);
 
     // Serial.print("\t");
     // Serial.print(processus_Communication_Struct_WANTED_Value.Pitch);
@@ -140,12 +160,7 @@ void processus_Calcule_Accelerometre_GetPosition()
 
 void processus_Calcule_Accelerometre_Determine_Servo_Position()
 {
-    compteur_UpdateVal++;
-    if(compteur_UpdateVal > 100)
-    {
-        processus_Calcule_Accelerometre_Calcule_Orientation();
-        compteur_UpdateVal = 0;
-    }
+    
 
     float DA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
     float GA_angle = processus_Calcule_Accelerometre_Struct.Pitch + processus_Calcule_Accelerometre_Struct.Roll;
@@ -189,33 +204,15 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
 }
 
 
-void processus_Calcule_Accelerometre_Calcule_Orientation()
+void processus_Calcule_Accelerometre_Calcule_Orientation(sensors_event_t a,
+    sensors_event_t g,
+    sensors_event_t temp)
 {
-    float _pitch = processus_Calcule_Accelerometre_Struct.Orientation_Pitch;
-    float _roll = 0;
-    float _yaw = 0;
-
-    //pitch
-    if(processus_Calcule_Accelerometre_Struct.Orientation_Pitch < 0)
-    {
-        _pitch = _pitch * -1;
-    }
-
-    while(_pitch > 3.14)
-    {
-        _pitch -= _pitch;
-    }
-
-    //roll
-    if(processus_Calcule_Accelerometre_Struct.Orientation_Roll < 0)
-    {
-        _roll = _roll * -1;
-    }
-
-    while(_roll > 3.14)
-    {
-        _roll -= _roll;
-    }
+    processus_Calcule_Accelerometre_Struct.Orientation_Rho =  atan2f(a.acceleration.x, sqrt(pow(a.acceleration.y,2) + pow(a.acceleration.z,2)));
+    processus_Calcule_Accelerometre_Struct.Orientation_Phi =  atan2f(a.acceleration.y, sqrt(pow(a.acceleration.x,2) + pow(a.acceleration.z,2)));
+    //processus_Calcule_Accelerometre_Struct.Orientation_Teta = atan2f(sqrt(pow(a.acceleration.x,2) + pow(a.acceleration.y,2)), a.acceleration.z);
+    
+    float _yaw = processus_Calcule_Accelerometre_Struct.Orientation_Yaw;
 
     //yaw
     if(processus_Calcule_Accelerometre_Struct.Orientation_Yaw < 0)
@@ -223,17 +220,56 @@ void processus_Calcule_Accelerometre_Calcule_Orientation()
         _yaw = _yaw * -1;
     }
 
-    while(_yaw > 3.14)
+    while(_yaw > 2*3.14)
     {
         _yaw -= _yaw;
     }
+    //_yaw = _yaw + 1.70;
+    //yaw
+    if(processus_Calcule_Accelerometre_Struct.Orientation_Yaw < 0)
+    {
+        processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(2 * 3.14 - _yaw, 0, 2 * 3.14, MIN_ORIENTATION, MAX_ORIENTATION) ;
+    }
+    else
+    {
+        processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(_yaw, 0, 2 * 3.14, MIN_ORIENTATION, MAX_ORIENTATION);
+    }
+    processus_Communication_Struct_ACTUAL_Value.Yaw = processus_Communication_Struct_ACTUAL_Value.Yaw + 67;
 
-    
+    if(a.acceleration.z < 0)
+    {
+        processus_Communication_Struct_ACTUAL_Value.Pitch =  (signed char)map_Float(-1*processus_Calcule_Accelerometre_Struct.Orientation_Rho, -(3.14/2), (3.14/2), MID_ORIENTATION, MAX_ORIENTATION);
+        processus_Communication_Struct_ACTUAL_Value.Roll =  (signed char)map_Float(-1*processus_Calcule_Accelerometre_Struct.Orientation_Phi, -(3.14/2), (3.14/2), MID_ORIENTATION, MAX_ORIENTATION);
+        //processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(-1*processus_Calcule_Accelerometre_Struct.Orientation_Yaw, -(3.14/2), (3.14/2), MID_ORIENTATION, MAX_ORIENTATION) ;
 
-    processus_Communication_Struct_ACTUAL_Value.Pitch = (signed char)map_Float(_pitch, 0, 3.14, -127, 127);
-    processus_Communication_Struct_ACTUAL_Value.Roll = (signed char)map_Float(_roll, 0, 3.14, -127, 127);
-    processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(_yaw, 0, 3.14, -127, 127);
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Pitch);
+        // Serial.print("/");
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Roll);
+        // Serial.print("/");
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Yaw);
+        // Serial.println("\t/");
+    }
+    else
+    {
+        processus_Communication_Struct_ACTUAL_Value.Pitch =  (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Rho, -(3.14/2), (3.14/2), MIN_ORIENTATION, MID_ORIENTATION);
+        processus_Communication_Struct_ACTUAL_Value.Roll =  (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Phi, -(3.14/2), (3.14/2), MIN_ORIENTATION, MID_ORIENTATION);
+        //processus_Communication_Struct_ACTUAL_Value.Yaw = (signed char)map_Float(processus_Calcule_Accelerometre_Struct.Orientation_Yaw, -(3.14/2), (3.14/2), MIN_ORIENTATION, MID_ORIENTATION);
 
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Pitch);
+        // Serial.print("/");
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Roll);
+        // Serial.print("/");
+        // Serial.print(processus_Communication_Struct_ACTUAL_Value.Yaw);
+        // Serial.println("\t/");
+    }
+    //processus_Communication_Struct_ACTUAL_Value.Yaw = -60;
+
+
+    // Serial.print(processus_Communication_Struct_ACTUAL_Value.Pitch);
+    // Serial.print("/");
+    // Serial.print(processus_Communication_Struct_ACTUAL_Value.Roll);//pas bon
+    // Serial.print("/");
+    // Serial.println(processus_Communication_Struct_ACTUAL_Value.Yaw);
 
 }
 

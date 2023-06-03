@@ -69,11 +69,11 @@ void Processus_Controle_Adjuste_Servo()
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Surfacing
-  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Surfacing = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing;
+  //processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Surfacing = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Surfacing;
 
 
   //In_Emergency
-  processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency;
+  //processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency;
 
   //Autre
   //Dans leur processus

@@ -12,6 +12,10 @@ typedef struct
     float Orientation_Pitch;
     float Orientation_Roll;
 
+    float Orientation_Rho;
+    float Orientation_Phi;
+    float Orientation_Teta;
+
     unsigned char Wanted_SERVO_GA_angle;
     unsigned char Wanted_SERVO_GR_angle;
     unsigned char Wanted_SERVO_DA_angle;

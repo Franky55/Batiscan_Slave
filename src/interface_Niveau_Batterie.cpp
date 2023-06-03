@@ -57,7 +57,7 @@ int interface_NIVEAUBATTERIE_Read(int *valeur)
     *valeur = moyenne;
     interface_Niveau_Batterie_Struct.batterie = moyenne;
     
-    interface_Niveau_Batterie_Verification_Batterie(val);
+    interface_Niveau_Batterie_Verification_Batterie(moyenne);
 
     return 0;
 }
