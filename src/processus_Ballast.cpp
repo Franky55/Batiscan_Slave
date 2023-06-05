@@ -54,7 +54,7 @@ void processus_Ballast_Wait_State()
     processus_Ballast_Struct.state = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State;
     
     Serial.print("BALLAST: ");
-    Serial.println(processus_Ballast_Struct.timer_Control_Ballast);
+    Serial.println(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State);
     
     switch (processus_Ballast_Struct.state)
     {
@@ -81,6 +81,7 @@ void processus_Ballast_FILL_UP()
     if(processus_Ballast_Struct.state != STATE_BALLAST_FILL_UP)                                 //Check si communication a changer le State
     {
         interface_GPIO_Write(VALVE, CLOSE_VALVE);
+        digitalWrite(DRIVE_BALLAST, LOW);
         serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
         return;
     }
@@ -89,6 +90,7 @@ void processus_Ballast_FILL_UP()
     if(processus_Ballast_Struct.timer_Control_Ballast >= PROCESSUS_BALLAST_FULL)                //Check si timer est trop haut
     {
         interface_GPIO_Write(VALVE, CLOSE_VALVE);
+        digitalWrite(DRIVE_BALLAST, LOW);
         processus_Ballast_Struct.FULL = 1;
         processus_Ballast_Struct.state = STATE_BALLAST_WAIT;
         serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
@@ -98,6 +100,7 @@ void processus_Ballast_FILL_UP()
     processus_Ballast_Struct.timer_Control_Ballast++;                                           //augmente le timer
 
     interface_GPIO_Write(VALVE, OPEN_VALVE);
+    digitalWrite(DRIVE_BALLAST, LOW);
     serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
 }
 
