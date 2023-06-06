@@ -12,6 +12,7 @@ typedef struct
     bool limit_Switch_Haut;
     bool limit_Switch_Bas;
     bool FULL;
+    bool ByPASS;
 
 }PROCESSUS_BALLAST;
 

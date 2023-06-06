@@ -34,6 +34,7 @@ int processus_Ballast_initialise(void)
     processus_Ballast_Struct.limit_Switch_Haut = 0;
     processus_Ballast_Struct.state = 0;
     processus_Ballast_Struct.timer_Control_Ballast = 0;
+    processus_Ballast_Struct.ByPASS = 0;
 
     digitalWrite(DRIVE_BALLAST, LOW);
     //interface_Analogue_Write(DRIVE_BALLAST, 0);
@@ -52,9 +53,14 @@ void processus_Ballast_Wait_State()
 {
     processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.Ballast_State = processus_Ballast_Struct.FULL;
     processus_Ballast_Struct.state = processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State;
+
+    if(processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency == 1 || processus_Ballast_Struct.ByPASS == 1)
+    {
+        processus_Ballast_Struct.state = STATE_BALLAST_EMPTY_OUT;
+    }
     
-    Serial.print("BALLAST: ");
-    Serial.println(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State);
+    // Serial.print("BALLAST: ");
+    // Serial.println(processus_Communication_Struct_WANTED_Value.union_Bool.bits.Ballast_State);
     
     switch (processus_Ballast_Struct.state)
     {

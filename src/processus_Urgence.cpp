@@ -9,6 +9,7 @@
 #include "interface_NEOPIXEL.h"
 #include <stdio.h>
 #include "Processus_Communication.h"
+#include "Processus_Ballast.h"
 #include "processus_Urgence.h"
 
 
@@ -77,34 +78,34 @@ void Check_Emergencies()
     {
         Serial.println("PRESSION URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
-        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+        
     }
     else
     if(interface_Temperature_Struct.niveau_Urgence == 4)
     {
         Serial.println("TEMPERATURE URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
-        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+        
     }
     else
     if(interface_Niveau_eau.niveau_Urgence == 4)
     {
         Serial.println("WATER URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
-        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+        
     }
     else
     if(interface_Niveau_Batterie_Struct.niveau_Urgence == 4)
     {
         Serial.println("BATTERIE URGENT");
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
-        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+        
     }
     else
     {
         processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 0;
-        processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 0;
     }
+    
 
 
     if(interface_Niveau_Batterie_Struct.niveau_Urgence == 3)
@@ -115,12 +116,10 @@ void Check_Emergencies()
 
     if(processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency == 1)
     {
+        processus_Ballast_Struct.state = STATE_BALLAST_EMPTY_OUT;
         interface_NEOPIXEL_allume(50, 0, 0);
     }
-    else
-    {
-        interface_NEOPIXEL_allume(0, 50, 0);
-    }
+    
 
 
     serviceBaseDeTemps_execute[PROCESSUS_URGENCE_PHASE] = processus_Urgence_Lecture_Capteur;

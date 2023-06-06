@@ -6,6 +6,7 @@
 #include "serviceBaseDeTemps.h"
 #include "service_Protocole_SPI.h"
 #include <stdio.h>
+#include "Processus_Ballast.h"
 #include "Processus_Communication.h"
 
 // if udp:         https://gist.github.com/santolucito/70ecb94ce297eb1b8b8034f78683447b
@@ -56,20 +57,29 @@ void processus_Communication_Att_Lire()
     {
         if(compt_Since_Last_Trame == 1000)    // 100 ms
         {
-            processus_Communication_Struct_WANTED_Value.Is_Communicating = 0;
+            processus_Communication_Struct_ACTUAL_Value.Is_Communicating = 0;
             interface_SPI_SLAVE_initialise();// cela va reset le master
         }
         if(compt_Since_Last_Trame == 10000)   // 2000 ms
         {
-            processus_Communication_Struct_WANTED_Value.union_Bool.bits.In_Emergency = 1;
+            interface_NEOPIXEL_allume(50, 50, 0);
+            processus_Ballast_Struct.ByPASS = 1;
             processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency = 1;
+            processus_Communication_Struct_ACTUAL_Value.Is_Communicating = 0;
             interface_SPI_SLAVE_initialise();// cela va reset le master
         }
 
         return;
     }
+
+    if(processus_Communication_Struct_ACTUAL_Value.union_Bool.bits.In_Emergency == 0)
+    {
+        interface_NEOPIXEL_allume(0, 50, 0);
+    }
+    
     compt_Since_Last_Trame = 0;
-    processus_Communication_Struct_WANTED_Value.Is_Communicating = 1;
+    processus_Ballast_Struct.ByPASS = 0;
+    processus_Communication_Struct_ACTUAL_Value.Is_Communicating = 1;
     serviceBaseDeTemps_execute[PROCESSUSCOMMUNICATION] = processus_Communication_Lire;
 
 }
