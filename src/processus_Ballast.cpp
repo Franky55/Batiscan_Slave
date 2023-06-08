@@ -106,7 +106,8 @@ void processus_Ballast_FILL_UP()
     processus_Ballast_Struct.timer_Control_Ballast++;                                           //augmente le timer
 
     interface_GPIO_Write(VALVE, OPEN_VALVE);
-    digitalWrite(DRIVE_BALLAST, LOW);
+    interface_GPIO_Write(DIRECTION_BALLAST, HIGH);
+    digitalWrite(DRIVE_BALLAST, HIGH);
     serviceBaseDeTemps_execute[PROCESSUS_GESTION_BALLAST] = processus_Ballast_Wait_State;
 }
 
@@ -143,6 +144,7 @@ void processus_Ballast_EMPTY_OUT()
         return;
     }
     processus_Ballast_Struct.timer_Control_Ballast--;
+    interface_GPIO_Write(DIRECTION_BALLAST, LOW);
     digitalWrite(DRIVE_BALLAST, HIGH);
     interface_GPIO_Write(VALVE, OPEN_VALVE);
     // Serial.print("Empty ballast: ");

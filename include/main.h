@@ -129,7 +129,7 @@
  * @brief Le temps est utilise par un compteur qui se fait avec la base de temps
  * 
  */
-#define PROCESSUS_BALLAST_FULL_EN_MS 2500
+#define PROCESSUS_BALLAST_FULL_EN_MS 9000
 #define PROCESSUS_BALLAST_EMPTY_EN_MS 0
 
 
@@ -157,7 +157,7 @@
  * My circuit goes: Nuh huh
  * 
  */
-#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 1
+#define INTERFACE_PWM_TEMPS_UPDATE_EN_MS 20
 
 #define INTERFACE_PWM_MOTEUR_TEMPS_UPDATE_EN_MS 50
 

@@ -60,7 +60,7 @@ void processus_Communication_Att_Lire()
             processus_Communication_Struct_ACTUAL_Value.Is_Communicating = 0;
             interface_SPI_SLAVE_initialise();// cela va reset le master
         }
-        if(compt_Since_Last_Trame == 10000)   // 2000 ms
+        if(compt_Since_Last_Trame == 5000)   // 2000 ms
         {
             interface_NEOPIXEL_allume(50, 50, 0);
             processus_Ballast_Struct.ByPASS = 1;
