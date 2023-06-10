@@ -87,9 +87,30 @@ void processus_Calcule_Accelerometre_Offset()
 
 }
 
-
+/**
+ * @brief Cette fonction se fait dans le gere loop du main
+ * Il prend le data de l'accélérometre et le gyroscope
+ * 
+ */
 void processus_Calcule_Accelerometre_GetPosition() 
 {
+    /*
+    Shawn si finalement le PCB se trouve en l'envers il faudra modifier le code.
+
+    Je n'ai pas fait de modification dans le code, mais je crois qu'il faudrait juste faire *-1 devant les variables suivante:
+    a.acceleration.x
+    a.acceleration.y
+    a.acceleration.z
+
+    il y a aussi peut etre, mais je ne crois pas:
+    g.gyro.x 
+    g.gyro.y
+    g.gyro.z
+
+
+    */
+
+
     sensors_event_t a;
     sensors_event_t g;
     sensors_event_t temp;
@@ -128,36 +149,16 @@ void processus_Calcule_Accelerometre_GetPosition()
         compteur_UpdateVal = 0;
     }
 
-    
-
-    
-
-    
-
-    // Serial.print(a.acceleration.x);
-    // Serial.print("/");
-    // Serial.print(a.acceleration.y);//pas bon
-    // Serial.print("/");
-    // Serial.println(a.acceleration.z);
-
-    // Serial.print("\t");
-    // Serial.print(processus_Communication_Struct_WANTED_Value.Pitch);
-    // Serial.print("/");
-    // Serial.print(processus_Communication_Struct_WANTED_Value.Roll);//pas bon
-    // Serial.print("/");
-    // Serial.println(processus_Communication_Struct_WANTED_Value.Yaw);
-
-
-    // last_Pithc = processus_Calcule_Accelerometre_Struct.Pitch;
-    // last_Roll = processus_Calcule_Accelerometre_Struct.Roll;
-    // last_Yaw = yaw;
-
-    // compt42++;
+ 
     
 }
 
 
-
+/**
+ * @brief Cette fonction prend le data récupéré pour déterminer l'angle des servos moteurs
+ * Cette fonction est dans la base de temps
+ * 
+ */
 void processus_Calcule_Accelerometre_Determine_Servo_Position()
 {
     
