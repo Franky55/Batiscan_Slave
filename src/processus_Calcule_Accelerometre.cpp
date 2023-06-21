@@ -48,12 +48,12 @@ int compteur_UpdateVal = 0;
 
 int processus_Calcule_Accelerometre_initialise()
 {
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle = (float)-1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)-1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)1.0;
-    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GA_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_GR_angle = (float)1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DA_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_DR_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle = (float)-1.0;
+    processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle = (float)1.0;
 
 
     processus_Calcule_Accelerometre_Offset();
@@ -163,14 +163,14 @@ void processus_Calcule_Accelerometre_Determine_Servo_Position()
 {
     
 
-    float DA_angle = processus_Calcule_Accelerometre_Struct.Pitch - processus_Calcule_Accelerometre_Struct.Roll;
-    float GA_angle = processus_Calcule_Accelerometre_Struct.Pitch + processus_Calcule_Accelerometre_Struct.Roll;
+    float DA_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) - processus_Calcule_Accelerometre_Struct.Roll;
+    float GA_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
 
     float DR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) - processus_Calcule_Accelerometre_Struct.Roll;
     float GR_angle = (-1*processus_Calcule_Accelerometre_Struct.Pitch) + processus_Calcule_Accelerometre_Struct.Roll;
 
-    float H_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, -127, 127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
-    float S_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, -127, 127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
+    float H_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_H_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, 127, -127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
+    float S_angle = map_Float((float)processus_Calcule_Accelerometre_Struct.Wrong_Way_S_angle * (float)processus_Communication_Struct_WANTED_Value.Yaw, 127, -127, MIN_FLOAT_ACC, MAX_FLOAT_ACC) + processus_Calcule_Accelerometre_Struct.Roll;
     
 
     //je m'assure de ne pas depasser la val max ou min
