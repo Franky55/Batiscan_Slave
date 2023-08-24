@@ -47,12 +47,12 @@ void Processus_Controle_Adjuste_Servo()
   }
   else
   {
-    interface_PWM_Struct.SERVO_GA_angle = ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle;
-    interface_PWM_Struct.SERVO_GR_angle = ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle;
-    interface_PWM_Struct.SERVO_DA_angle = ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle;
-    interface_PWM_Struct.SERVO_DR_angle = ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle;
-    interface_PWM_Struct.SERVO_H_angle =  ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle;
-    interface_PWM_Struct.SERVO_S_angle =  ANGLE_MAX - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle;
+    interface_PWM_Struct.SERVO_GA_angle = 180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle;
+    interface_PWM_Struct.SERVO_GR_angle = 180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle;
+    interface_PWM_Struct.SERVO_DA_angle = 180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle;
+    interface_PWM_Struct.SERVO_DR_angle = 180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle;
+    interface_PWM_Struct.SERVO_H_angle =  180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle;
+    interface_PWM_Struct.SERVO_S_angle =  180 - (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle;
   }
 
   
