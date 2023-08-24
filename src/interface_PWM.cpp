@@ -31,6 +31,7 @@ int interface_PWM_Initialise()
 {
     interface_PWM_Struct.Drive_value = 92;
     interface_PWM_Struct.Drive_Value_SlowChange = 92;
+    interface_PWM_Struct.Sense_sous_marin = 1;
     serviceBaseDeTemps_execute[INTERFACE_UPDATE_PWM] = interface_PWM_Update_Avant;
     serviceBaseDeTemps_execute[INTERFACE_UPDATE_MOTEUR] = interface_PWM_Update_Moteur;
     
@@ -45,10 +46,13 @@ void interface_PWM_Update_Moteur()
         if(interface_PWM_Struct.Drive_value > interface_PWM_Struct.Drive_Value_SlowChange)
         {
             interface_PWM_Struct.Drive_Value_SlowChange++;
+            interface_PWM_Struct.Sense_sous_marin = 1;
+            
         }
         if(interface_PWM_Struct.Drive_value < interface_PWM_Struct.Drive_Value_SlowChange)
         {
             interface_PWM_Struct.Drive_Value_SlowChange--;
+            interface_PWM_Struct.Sense_sous_marin = -1;
         }
         interface_PWM_Moteur_compteur = 0;
         

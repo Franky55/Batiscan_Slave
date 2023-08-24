@@ -35,12 +35,12 @@ void Processus_Controle_Adjuste_Servo()
 {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Servos
-  interface_PWM_Struct.SERVO_GA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle;
-  interface_PWM_Struct.SERVO_GR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle;
-  interface_PWM_Struct.SERVO_DA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle;
-  interface_PWM_Struct.SERVO_DR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle;
-  interface_PWM_Struct.SERVO_H_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle;
-  interface_PWM_Struct.SERVO_S_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle;
+  interface_PWM_Struct.SERVO_GA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GA_angle * interface_PWM_Struct.Sense_sous_marin;
+  interface_PWM_Struct.SERVO_GR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_GR_angle * interface_PWM_Struct.Sense_sous_marin;
+  interface_PWM_Struct.SERVO_DA_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DA_angle * interface_PWM_Struct.Sense_sous_marin;
+  interface_PWM_Struct.SERVO_DR_angle = (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_DR_angle * interface_PWM_Struct.Sense_sous_marin;
+  interface_PWM_Struct.SERVO_H_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_H_angle * interface_PWM_Struct.Sense_sous_marin;
+  interface_PWM_Struct.SERVO_S_angle =  (unsigned char)processus_Calcule_Accelerometre_Struct.Wanted_SERVO_S_angle * interface_PWM_Struct.Sense_sous_marin;
 
   interface_PWM_Struct.SERVO_X_angle = (signed char)map((long)processus_Communication_Struct_WANTED_Value.Camera_Servo_Angle, 127, -127, 0, 180);
 
